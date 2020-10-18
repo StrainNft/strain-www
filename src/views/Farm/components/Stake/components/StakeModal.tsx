@@ -52,7 +52,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
           onSelectMax={handleSelectMax}
           onChange={handleChange}
           max={fullBalance}
-          symbol="STRN_ETH_UNI_LP"
+          symbol="STRN/ETH UNI-V2 LP"
         />
       </ModalContent>
       <ModalActions>
