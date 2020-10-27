@@ -33,7 +33,7 @@ const HowItWorks = () => {
                 </tr>
                 </tbody>
             </StyledHowItWorksTable>
-            <img src={roadmap} width={1200}/>
+            <StyledRoadmap src={roadmap}/>
         </StyledHowItWorksContainer>
     )
 };
@@ -46,32 +46,34 @@ const StyledTitle = styled.h2`
   padding: 0;
   text-align: left;
   margin-left: 20px;
+  max-width: 1200px;
 `;
 
 const StyledHowItWorksContainer = styled.div`
   box-sizing: border-box;
   display: inline-block;
-  width: 1200px;
+  width: 80%;
   padding-bottom: ${props => props.theme.spacing[6]}px;
   margin: 0 auto;
   text-align: left;
+  max-width: 1200px;
 `;
 
 const StyledHr = styled.div`
     border-top: 4px solid;
     border-color: #86CfF8;
-    width: 1160px;
+    width: 100%;
     height: 5px;
     margin: 0;
     margin-top: 15px;
-    margin-left: 20px;
+    max-width: 1200px;
 `;
 
 const StyledHowItWorksTable = styled.table`
     margin-top: 20px;
-    width: 1160px;
+    width: 100%;
     border-collapse: collapse;
-    margin-left: 20px;
+    max-width: 1200px;
 `;
 
 const StyledTableData = styled.td`
@@ -115,6 +117,15 @@ const StyledButtonTwo = styled(Link)`
     text-decoration: none;
     width: 120px;
     padding-top: 10px;
+`;
+
+const StyledRoadmap = styled.img`
+    display: block;
+    width: 100%;
+    margin: auto;
+    margin-top: 15px;
+    padding-top: 10px;
+    max-width: 1200px;
 `;
 
 export default HowItWorks
