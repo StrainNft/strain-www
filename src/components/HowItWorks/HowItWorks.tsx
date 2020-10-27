@@ -1,39 +1,31 @@
 import React from "react";
 import styled from "styled-components";
 import roadmap from '../../assets/roadmap.png'
-import { Link  } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const HowItWorks = () => {
     return (
         <StyledHowItWorksContainer>
             <StyledTitle>How it works</StyledTitle>
-            <StyledHr></StyledHr>
+            <StyledHr />
             <StyledHowItWorksTable>
-                <tbody>
-                <tr>
-                    <StyledTableData>
-                        1. Pool STRN/ETH on Uniswap.
+                <StyledOneBlock>
+                    1. Pool STRN/ETH on Uniswap.
                         <StyledButtonOne href="https://app.uniswap.org/#/add/ETH/0x90b426067bE0b0FF5De257BC4dd6a4815Ea03b5f" target="_blank">Provide LP STRN/ETH</StyledButtonOne>
-                    </StyledTableData>
-                    <StyledTableData>
-                        2. Stake LP tokens on Strain NFT.
-                        <StyledButtonTwo  to="/stake" replace={false}>Stake</StyledButtonTwo>
-                    </StyledTableData>
-                </tr>
-                <tr>
-                    <StyledTableData>3. Create your Strain</StyledTableData>
-                    <StyledTableData>4. Earn & recycle STRN rewards, upgrading the yield based performance (Buzz, or potency) of your Strain over time.</StyledTableData>
-                </tr>
-                <tr>
-                    <td colSpan={2} style={{ border: '1px solid #0CF5A5',  clear: 'both', height: '100px', textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>
-                        - Shape the future of Strain NFT, when you vote in the StrainSuperDAO! <br />
+                </StyledOneBlock>
+                <StyledTwoBlock>
+                    2. Stake LP tokens on Strain NFT.
+                        <StyledButtonTwo to="/stake" replace={false}>Stake</StyledButtonTwo>
+                </StyledTwoBlock>
+                <StyledThreeBlock>3. Create your Strain</StyledThreeBlock>
+                <StyledFourBlock>4. Earn & recycle STRN rewards, upgrading the yield based performance (Buzz, or potency) of your Strain over time.</StyledFourBlock>
+                <StyledTableDataInfo >
+                    - Shape the future of Strain NFT, when you vote in the StrainSuperDAO! <br />
                         - Breed together multiple Strains in the Greenhouse. <br />
                         - Trade Stains in the Dispensary with other community members.
-                    </td>
-                </tr>
-                </tbody>
+                    </StyledTableDataInfo>
             </StyledHowItWorksTable>
-            <StyledRoadmap src={roadmap}/>
+            <StyledRoadmap src={roadmap} />
         </StyledHowItWorksContainer>
     )
 };
@@ -69,21 +61,71 @@ const StyledHr = styled.div`
     max-width: 1200px;
 `;
 
-const StyledHowItWorksTable = styled.table`
-    margin-top: 20px;
-    width: 100%;
-    border-collapse: collapse;
-    max-width: 1200px;
+const StyledHowItWorksTable = styled.div`
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 1px;
+
+    @media (max-width: 613px) {
+        grid-template-columns: 100%;
+    }
 `;
 
-const StyledTableData = styled.td`
+const StyledTableData = styled.div`
+    padding: 1rem;
     border: 1px solid #0CF5A5;
-    height: 100px;
-    text-align: center;
     font-weight: bold;
     font-size: 18px;
-    width: 50%;
 `;
+
+const StyledOneBlock = styled(StyledTableData)`
+    grid-column: 1;
+    gid-row: 1;
+`
+
+const StyledTwoBlock = styled(StyledTableData)`
+    grid-column: 2;
+    gid-row: 1;
+
+    @media (max-width: 613px) {
+        grid-column: 1;
+        gid-row: 2;
+    }
+    `
+
+const StyledThreeBlock = styled(StyledTableData)`
+    grid-column: 1;
+    gid-row: 2;
+
+    @media (max-width: 613px) {
+        grid-column: 1;
+        gid-row: 3;
+    }
+
+`
+
+const StyledFourBlock = styled(StyledTableData)`
+    grid-column: 2;
+    gid-row: 2;
+
+    @media (max-width: 613px) {
+        grid-column: 1;
+        gid-row: 4;
+    }
+
+    `
+
+const StyledTableDataInfo = styled(StyledTableData)`
+    text-align: left;
+    grid-column: 1 / 3;
+    grid-row: 3;
+
+    @media (max-width: 613px) {
+        grid-column: 1;
+        gid-row: 5;
+    }
+
+    `
 
 const StyledButtonOne = styled.a`
     display: block;
