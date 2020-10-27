@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
+import roadmap from '../../assets/roadmap.png'
 
 const HowItWorks = () => {
     return (
@@ -10,18 +10,23 @@ const HowItWorks = () => {
             <StyledHowItWorksTable>
                 <tbody>
                 <tr>
-                    <StyledTableData>1. Pool Uni / Strn on Uniswap</StyledTableData>
-                    <StyledTableData>2. Add LP tokens to Strain</StyledTableData>
+                    <StyledTableData>1. Pool STRN/ETH on Uniswap.</StyledTableData>
+                    <StyledTableData>2. Stake LP tokens on Strain NFT.</StyledTableData>
                 </tr>
                 <tr>
-                    <StyledTableData>3. Design your Strain</StyledTableData>
-                    <StyledTableData>4. Earn STRN, re-plant, and upgrade your NFT</StyledTableData>
+                    <StyledTableData>3. Create your Strain</StyledTableData>
+                    <StyledTableData>4. Earn & recycle STRN rewards, upgrading the yield based performance (Buzz, or potency) of your Strain over time.</StyledTableData>
                 </tr>
                 <tr>
-                    <td colSpan={2} style={{ border: '1px solid #0CF5A5',  clear: 'both', height: '100px', textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>5. Vote and create the future of the product</td>
+                    <td colSpan={2} style={{ border: '1px solid #0CF5A5',  clear: 'both', height: '100px', textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>
+                        - Shape the future of Strain NFT, when you vote in the StrainSuperDAO! <br />
+                        - Breed together multiple Strains in the Greenhouse. <br />
+                        - Trade Stains in the Dispensary with other community members.
+                    </td>
                 </tr>
                 </tbody>
             </StyledHowItWorksTable>
+            <img src={roadmap} width={1200}/>
         </StyledHowItWorksContainer>
     )
 };
@@ -33,6 +38,7 @@ const StyledTitle = styled.h2`
   margin: 0;
   padding: 0;
   text-align: left;
+  margin-left: 20px;
 `;
 
 const StyledHowItWorksContainer = styled.div`
@@ -47,16 +53,18 @@ const StyledHowItWorksContainer = styled.div`
 const StyledHr = styled.div`
     border-top: 4px solid;
     border-color: #86CfF8;
-    width: 1200px;
+    width: 1160px;
     height: 5px;
     margin: 0;
     margin-top: 15px;
+    margin-left: 20px;
 `;
 
 const StyledHowItWorksTable = styled.table`
     margin-top: 20px;
-    width: 1200px;
+    width: 1160px;
     border-collapse: collapse;
+    margin-left: 20px;
 `;
 
 const StyledTableData = styled.td`
@@ -65,6 +73,7 @@ const StyledTableData = styled.td`
     text-align: center;
     font-weight: bold;
     font-size: 18px;
+    width: 50%;
 `;
 
 export default HowItWorks
