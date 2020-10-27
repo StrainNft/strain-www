@@ -10,8 +10,14 @@ const HowItWorks = () => {
             <StyledHowItWorksTable>
                 <tbody>
                 <tr>
-                    <StyledTableData>1. Pool STRN/ETH on Uniswap.</StyledTableData>
-                    <StyledTableData>2. Stake LP tokens on Strain NFT.</StyledTableData>
+                    <StyledTableData>
+                        1. Pool STRN/ETH on Uniswap.
+                        <StyledButtonOne>Provide LP STRN/ETH</StyledButtonOne>
+                    </StyledTableData>
+                    <StyledTableData>
+                        2. Stake LP tokens on Strain NFT.
+                        <StyledButtonTwo>Stake</StyledButtonTwo>
+                    </StyledTableData>
                 </tr>
                 <tr>
                     <StyledTableData>3. Create your Strain</StyledTableData>
@@ -74,6 +80,34 @@ const StyledTableData = styled.td`
     font-weight: bold;
     font-size: 18px;
     width: 50%;
+`;
+
+const StyledButtonOne = styled.button`
+    display: block;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+    height: 40px;
+    background-color: #8D87FB;
+    cursor:pointer;
+    font-weight: bold;
+    margin: auto;
+    margin-top: 15px;
+`;
+
+const StyledButtonTwo = styled.button`
+    display: block;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+    height: 40px;
+    background-color: #00AC69;
+    cursor:pointer;
+    font-weight: bold;
+    margin: auto;
+    margin-top: 15px;
 `;
 
 export default HowItWorks

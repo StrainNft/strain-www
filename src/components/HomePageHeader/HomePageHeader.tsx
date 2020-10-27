@@ -42,7 +42,7 @@ const StyledHomePageContainer = styled.div`
   width: 50%;
   padding-bottom: ${props => props.theme.spacing[6]}px;
   margin: 0 auto;
-  text-align: left;
+  text-align: center;
   vertical-align: middle;
 `;
 
@@ -64,16 +64,19 @@ const StyledSubtitle = styled.h3`
   opacity: 0.66;
   padding: 0;
   margin: auto;
+  text-align: left;
 `;
 
 const StyledStrnButton = styled.a`
     display: block;
-    width: 150px;
+    width: 100px;
     height: 40px;
-    border: none;
+    border: solid 1px #6C63FF;
+    border-radius: 5px;
+    text-align: center;
     line-height: 40px;
     text-decoration: none;
-    color: #6C63FF;;
+    color: #6C63FF;
     background-color: Transparent;
     background-repeat:no-repeat;
     cursor:pointer;
