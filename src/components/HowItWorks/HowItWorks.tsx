@@ -65,6 +65,7 @@ const StyledHowItWorksTable = styled.div`
     display: grid;
     grid-template-columns: 50% 50%;
     grid-auto-rows: auto;
+
     grid-gap: 1px;
 
     @media (max-width: 613px) {
