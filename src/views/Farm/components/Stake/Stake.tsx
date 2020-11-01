@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import Countdown, { CountdownRenderProps} from 'react-countdown'
 import numeral from 'numeral'
 import {
   Box,
@@ -21,15 +20,13 @@ import { bnToDec } from 'utils'
 
 import StakeModal from './components/StakeModal'
 import UnstakeModal from './components/UnstakeModal'
+import styled from 'styled-components'
 
-const Stake: React.FC = () => {
+const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpImage?: string }> = ({ poolId, lpEmoji, lpImage, lpLabel }) => {
   const [stakeModalIsOpen, setStakeModalIsOpen] = useState(false)
   const [unstakeModalIsOpen, setUnstakeModalIsOpen] = useState(false)
-
   const { status } = useWallet()
   const {
-    countdown,
-    farmingStartTime,
     isApproved,
     isApproving,
     isStaking,
@@ -49,12 +46,12 @@ const Stake: React.FC = () => {
   }, [setUnstakeModalIsOpen])
 
   const handleOnStake = useCallback((amount: string) => {
-    onStake(amount)
+    onStake(poolId, amount)
     handleDismissStakeModal()
   }, [handleDismissStakeModal, onStake])
 
   const handleOnUnstake = useCallback((amount: string) => {
-    onUnstake(amount)
+    onUnstake(poolId, amount)
     handleDismissUnstakeModal()
   }, [
     handleDismissUnstakeModal,
@@ -112,7 +109,6 @@ const Stake: React.FC = () => {
       )
     }
   }, [
-    countdown,
     handleStakeClick,
     isApproving,
     onApprove,
@@ -164,39 +160,28 @@ const Stake: React.FC = () => {
     }
   }, [stakedBalance])
 
-  const renderer = (countdownProps: CountdownRenderProps) => {
-    const { hours, minutes, seconds } = countdownProps
-    const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds
-    const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes
-    const paddedHours = hours < 10 ? `0${hours}` : hours
-    return (
-      <Box row justifyContent="center">
-        <Label text={`Farming starts in ${paddedHours}:${paddedMinutes}:${paddedSeconds}`} />
-      </Box>)
-  }
+  const StyledImage = styled.img`
+    display: block;
+    width: '50px';
+`;
 
   return (
     <>
       <Card>
-        <CardIcon>🔒</CardIcon>
+        <CardIcon>{lpEmoji ? lpEmoji : <StyledImage src={require(`../../../../assets/${lpImage}`)} />}</CardIcon>
         <CardContent>
           <Box
             alignItems="center"
             column
           >
             <Value value={formattedStakedBalance} />
-            <Label text="Staked LP STRN/ETH Tokens" />
+            <Label text={`Staked LP ${lpLabel} Tokens`} />
           </Box>
         </CardContent>
         <CardActions>
           {UnstakeButton}
           {StakeButton}
         </CardActions>
-        {typeof countdown !== 'undefined' && countdown > 0 && (
-          <CardActions>
-            <Countdown date={farmingStartTime} renderer={renderer} />
-          </CardActions>
-        )}
       </Card>
       <StakeModal
         isOpen={stakeModalIsOpen}

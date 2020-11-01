@@ -19,11 +19,8 @@ import {
 
 import Context from './Context'
 
-const farmingStartTime = 1600545500*1000
-
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
-  const [countdown, setCountdown] = useState<number>()
   const [isHarvesting, setIsHarvesting] = useState(false)
   const [isRedeeming, setIsRedeeming] = useState(false)
   const [isStaking, setIsStaking] = useState(false)
@@ -93,10 +90,10 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleRedeem = useCallback(async () => {
+  const handleRedeem = useCallback(async (poolId) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await redeem(yam, account, () => {
+    await redeem(yam, poolId, account, () => {
       setConfirmTxModalIsOpen(false)
       setIsRedeeming(true)
     })
@@ -108,10 +105,10 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleStake = useCallback(async (amount: string) => {
+  const handleStake = useCallback(async (poolId: string, amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await stake(yam, amount, account, () => {
+    await stake(yam, poolId, amount, account, () => {
       setConfirmTxModalIsOpen(false)
       setIsStaking(true)
     })
@@ -123,10 +120,10 @@ const Provider: React.FC = ({ children }) => {
     yam
   ])
 
-  const handleUnstake = useCallback(async (amount: string) => {
+  const handleUnstake = useCallback(async (poolId: string, amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await unstake(yam, amount, account, () => {
+    await unstake(yam, poolId, amount, account, () => {
       setConfirmTxModalIsOpen(false)
       setIsUnstaking(true)
     })
@@ -144,15 +141,8 @@ const Provider: React.FC = ({ children }) => {
     return () => clearInterval(refreshInterval)
   }, [fetchBalances])
 
-  useEffect(() => {
-    let refreshInterval = setInterval(() => setCountdown(farmingStartTime - Date.now()), 1000)
-    return () => clearInterval(refreshInterval)
-  }, [setCountdown])
-
   return (
     <Context.Provider value={{
-      farmingStartTime,
-      countdown,
       earnedBalance,
       isApproved,
       isApproving,

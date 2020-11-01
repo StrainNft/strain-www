@@ -6,7 +6,8 @@ import { provider } from 'web3-core'
 import {
   strn as strnTokenAddress,
   strnEthLP as strnLPTokenAddress,
-  strnIncentivizer as strnEthIncAddress
+  strnIncentivizer as strnEthIncAddress,
+  strnXiotLP as strnXiotLPTokenAddress 
 } from 'constants/tokenAddresses'
 import { getBalance } from 'utils'
 
@@ -16,6 +17,7 @@ const Provider: React.FC = ({ children }) => {
   const [strnEthLpBalance, setStrnEthLpBalance] = useState<BigNumber>()
   const [strnTokenBalance, setStrnTokenBalance] = useState<BigNumber>()
   const [strnIncBalance, setStrnIncBalance] = useState<BigNumber>()
+  const [strnXiotLpBalance, setStrnXiotLpBalance] = useState<BigNumber>()
 
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
 
@@ -23,15 +25,18 @@ const Provider: React.FC = ({ children }) => {
     const balances = await Promise.all([
       await getBalance(provider, strnLPTokenAddress, userAddress),
       await getBalance(provider, strnTokenAddress, userAddress),
-      await getBalance(provider, strnEthIncAddress, userAddress)
+      await getBalance(provider, strnEthIncAddress, userAddress),
+      await getBalance(provider, strnXiotLPTokenAddress, userAddress)
     ])
     setStrnEthLpBalance(new BigNumber(balances[0]).dividedBy(new BigNumber(10).pow(18)))
     setStrnTokenBalance(new BigNumber(balances[1]).dividedBy(new BigNumber(10).pow(18)))
     setStrnIncBalance(new BigNumber(balances[2]).dividedBy(new BigNumber(10).pow(18)))
+    setStrnXiotLpBalance(new BigNumber(balances[2]).dividedBy(new BigNumber(10).pow(18)))
   }, [
     setStrnEthLpBalance,
     setStrnTokenBalance,
-    setStrnIncBalance
+    setStrnIncBalance,
+    setStrnXiotLpBalance,
   ])
 
   useEffect(() => {
@@ -60,7 +65,8 @@ const Provider: React.FC = ({ children }) => {
     <Context.Provider value={{
       strnEthLpBalance,
       strnTokenBalance,
-      strnIncBalance
+      strnIncBalance,
+      strnXiotLpBalance
     }}>
       {children}
     </Context.Provider>

@@ -8,4 +8,5 @@ export const strn = '0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f'
 export const strnEthLP = '0xa198f36e3648dd16e75d721f0c6516e00e9ca053'
 export const strnIncentivizer = '0x19Bf9bef453f57983319Eb3033a95a7aa7DB764d'
 // src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
-// make sure chainId is "1" and not "4"
+// todo: change this address when get real XIOT/STRN LP address
+export const strnXiotLP = '0xa198f36e3648dd16e75d721f0c6516e00e9ca053'
