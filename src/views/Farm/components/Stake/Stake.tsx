@@ -16,26 +16,43 @@ import Value from 'components/Value'
 
 import useFarming from 'hooks/useFarming'
 
-import { bnToDec } from 'utils'
-
+import { bnToDec, getItemValue } from 'utils'
 import StakeModal from './components/StakeModal'
 import UnstakeModal from './components/UnstakeModal'
 import styled from 'styled-components'
+import useApproval from 'hooks/useApproval'
 
 const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpImage?: string }> = ({ poolId, lpEmoji, lpImage, lpLabel }) => {
   const [stakeModalIsOpen, setStakeModalIsOpen] = useState(false)
   const [unstakeModalIsOpen, setUnstakeModalIsOpen] = useState(false)
   const { status } = useWallet()
   const {
-    isApproved,
-    isApproving,
+    getPoolLPAddress,
+    setConfirmTxModalIsOpen,
     isStaking,
     isUnstaking,
-    onApprove,
     onStake,
     onUnstake,
     stakedBalance,
+    strnEthPoolAddress,
+    onRedeem
   } = useFarming()
+
+
+  const { isApproved, isApproving, onApprove } = useApproval(
+    getPoolLPAddress(poolId),
+    strnEthPoolAddress,
+    () => setConfirmTxModalIsOpen(false)
+  )
+
+  const handleApprove = useCallback(() => {
+    setConfirmTxModalIsOpen(true)
+    onApprove()
+  }, [
+    onApprove,
+    setConfirmTxModalIsOpen,
+  ])
+  
 
   const handleDismissStakeModal = useCallback(() => {
     setStakeModalIsOpen(false)
@@ -58,6 +75,14 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     onUnstake,
   ])
 
+  const handleOnExit = useCallback(() => {
+    onRedeem(poolId)
+    handleDismissUnstakeModal()
+  }, [
+    handleDismissUnstakeModal,
+    onRedeem,
+  ])
+
   const handleStakeClick = useCallback(() => {
     setStakeModalIsOpen(true)
   }, [setStakeModalIsOpen])
@@ -77,7 +102,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         />
       )
     }
-    if (isStaking) {
+    if (getItemValue(isStaking, poolId)) {
       return (
         <Button
           disabled
@@ -92,7 +117,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         <Button
           disabled={isApproving}
           full
-          onClick={onApprove}
+          onClick={handleApprove}
           text={!isApproving ? "Approve staking" : "Approving staking..."}
           variant={isApproving || status !== 'connected' ? 'secondary' : 'default'}
         />
@@ -111,28 +136,28 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   }, [
     handleStakeClick,
     isApproving,
-    onApprove,
+    handleApprove,
     status,
   ])
 
-  const UnstakeButton = useMemo(() => {
+  const ExitButton = useMemo(() => {
     const hasStaked = stakedBalance && stakedBalance.toNumber() > 0
     if (status !== 'connected' || !hasStaked) {
       return (
         <Button
           disabled
           full
-          text="Unstake"
+          text="Exit"
           variant="secondary"
         />
       )
     }
-    if (isUnstaking) {
+    if (getItemValue(isUnstaking, poolId)) {
       return (
         <Button
           disabled
           full
-          text="Unstaking..."
+          text="Exit..."
           variant="secondary"
         />
       )
@@ -140,15 +165,15 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     return (
       <Button
         full
-        onClick={handleUnstakeClick}
-        text="Unstake"
+        onClick={() => onRedeem(poolId)}
+        text="Exit"
         variant="secondary"
       />
     )
   }, [
     handleUnstakeClick,
     isApproving,
-    onApprove,
+    handleApprove,
     status,
   ])
 
@@ -174,12 +199,12 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
             alignItems="center"
             column
           >
-            <Value value={formattedStakedBalance} />
+            {/*<Value value={formattedStakedBalance} />*/}
             <Label text={`Staked LP ${lpLabel} Tokens`} />
           </Box>
         </CardContent>
         <CardActions>
-          {UnstakeButton}
+          {ExitButton}
           {StakeButton}
         </CardActions>
       </Card>
@@ -187,11 +212,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         isOpen={stakeModalIsOpen}
         onDismiss={handleDismissStakeModal}
         onStake={handleOnStake}
-      />
-      <UnstakeModal
-        isOpen={unstakeModalIsOpen}
-        onDismiss={handleDismissUnstakeModal}
-        onUnstake={handleOnUnstake}
+        lpLabel={lpLabel}
       />
     </>
   )

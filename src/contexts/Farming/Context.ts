@@ -3,7 +3,9 @@ import { createContext } from 'react'
 import { ContextValues } from './types'
 
 const Context = createContext<ContextValues>({
-  onApprove: () => {},
+  strnEthPoolAddress: '',
+  getPoolLPAddress: () => '',
+  setConfirmTxModalIsOpen: () => {},
   onHarvest: () => {},
   onRedeem: () => {},
   onStake: () => {},

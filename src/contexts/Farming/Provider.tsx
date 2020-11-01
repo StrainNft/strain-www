@@ -4,8 +4,10 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
 import ConfirmTransactionModal from 'components/ConfirmTransactionModal'
-import { strnEthLP as strnEthLPAddress } from 'constants/tokenAddresses'
-import useApproval from 'hooks/useApproval'
+import {
+  strnEthLP as strnEthLPAddress,
+  strnXiotLP as strnXiotLPAddress
+} from 'constants/tokenAddresses'
 import useYam from 'hooks/useYam'
 
 import {
@@ -18,26 +20,27 @@ import {
 } from 'yam-sdk/utils'
 
 import Context from './Context'
+import { setItemValue } from 'utils'
 
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
-  const [isHarvesting, setIsHarvesting] = useState(false)
-  const [isRedeeming, setIsRedeeming] = useState(false)
-  const [isStaking, setIsStaking] = useState(false)
-  const [isUnstaking, setIsUnstaking] = useState(false)
+  const [isHarvesting, setIsHarvesting] = useState([false, false])
+  const [isRedeeming, setIsRedeeming] = useState([false, false])
+  const [isStaking, setIsStaking] = useState([false, false])
+  const [isUnstaking, setIsUnstaking] = useState([false, false])
 
   const [earnedBalance, setEarnedBalance] = useState<BigNumber>()
   const [stakedBalance, setStakedBalance] = useState<BigNumber>()
 
   const yam = useYam()
   const { account } = useWallet()
-  
+
   const strnEthPoolAddress = yam ? yam.contracts.strneth_pool.options.address : ''
-  const { isApproved, isApproving, onApprove } = useApproval(
-    strnEthLPAddress,
-    strnEthPoolAddress,
-    () => setConfirmTxModalIsOpen(false)
-  )
+
+  const lpAddresses = [strnEthLPAddress, strnXiotLPAddress]
+  const getPoolLPAddress = (poolId: string) => {
+    return lpAddresses[Number(poolId)]
+  }
 
   const fetchEarnedBalance = useCallback(async () => {
     if (!account || !yam) return
@@ -67,22 +70,14 @@ const Provider: React.FC = ({ children }) => {
     fetchStakedBalance,
   ])
 
-  const handleApprove = useCallback(() => {
-    setConfirmTxModalIsOpen(true)
-    onApprove()
-  }, [
-    onApprove,
-    setConfirmTxModalIsOpen,
-  ])
-
-  const handleHarvest = useCallback(async () => {
+  const handleHarvest = useCallback(async (poolId) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
     await harvest(yam, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsHarvesting(true)
+      setIsHarvesting(setItemValue(isHarvesting, poolId, true))
     })
-    setIsHarvesting(false)
+    setIsHarvesting(setItemValue(isHarvesting, poolId, false))
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -95,9 +90,9 @@ const Provider: React.FC = ({ children }) => {
     setConfirmTxModalIsOpen(true)
     await redeem(yam, poolId, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsRedeeming(true)
+      setIsRedeeming(setItemValue(isRedeeming, poolId, true))
     })
-    setIsRedeeming(false)
+    setIsRedeeming(setItemValue(isRedeeming, poolId, false))
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -110,9 +105,9 @@ const Provider: React.FC = ({ children }) => {
     setConfirmTxModalIsOpen(true)
     await stake(yam, poolId, amount, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsStaking(true)
+      setIsStaking(setItemValue(isStaking, poolId, true))
     })
-    setIsStaking(false)
+    setIsStaking(setItemValue(isStaking, poolId, false))
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -125,9 +120,9 @@ const Provider: React.FC = ({ children }) => {
     setConfirmTxModalIsOpen(true)
     await unstake(yam, poolId, amount, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsUnstaking(true)
+      setIsUnstaking(setItemValue(isUnstaking, poolId, true))
     })
-    setIsUnstaking(false)
+    setIsUnstaking(setItemValue(isUnstaking, poolId, false))
   }, [
     account,
     setConfirmTxModalIsOpen,
@@ -143,14 +138,14 @@ const Provider: React.FC = ({ children }) => {
 
   return (
     <Context.Provider value={{
+      getPoolLPAddress,
+      setConfirmTxModalIsOpen,
+      strnEthPoolAddress,
       earnedBalance,
-      isApproved,
-      isApproving,
       isHarvesting,
       isRedeeming,
       isStaking,
       isUnstaking,
-      onApprove: handleApprove,
       onHarvest: handleHarvest,
       onRedeem: handleRedeem,
       onStake: handleStake,

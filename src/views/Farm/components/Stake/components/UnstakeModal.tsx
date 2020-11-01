@@ -16,13 +16,15 @@ import useFarming from 'hooks/useFarming'
 import { getFullDisplayBalance } from 'utils'
 
 interface UnstakeModalProps extends ModalProps {
-  onUnstake: (amount: string) => void
+  onUnstake: (amount: string) => void,
+  lpLabel: string,
 }
 
 const UnstakeModal: React.FC<UnstakeModalProps> = ({
   isOpen,
   onDismiss,
   onUnstake,
+  lpLabel,
 }) => {
 
   const [val, setVal] = useState('')
@@ -53,7 +55,7 @@ const UnstakeModal: React.FC<UnstakeModalProps> = ({
           onSelectMax={handleSelectMax}
           onChange={handleChange}
           max={fullBalance}
-          symbol="STRN/ETH UNI-V2 LP"
+          symbol={`${lpLabel} UNI-V2 LP`}
         />
       </ModalContent>
       <ModalActions>

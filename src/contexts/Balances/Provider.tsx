@@ -31,7 +31,7 @@ const Provider: React.FC = ({ children }) => {
     setStrnEthLpBalance(new BigNumber(balances[0]).dividedBy(new BigNumber(10).pow(18)))
     setStrnTokenBalance(new BigNumber(balances[1]).dividedBy(new BigNumber(10).pow(18)))
     setStrnIncBalance(new BigNumber(balances[2]).dividedBy(new BigNumber(10).pow(18)))
-    setStrnXiotLpBalance(new BigNumber(balances[2]).dividedBy(new BigNumber(10).pow(18)))
+    setStrnXiotLpBalance(new BigNumber(balances[3]).dividedBy(new BigNumber(10).pow(18)))
   }, [
     setStrnEthLpBalance,
     setStrnTokenBalance,

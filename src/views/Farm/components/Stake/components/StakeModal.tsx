@@ -16,12 +16,14 @@ import { getFullDisplayBalance } from 'utils'
 
 interface StakeModalProps extends ModalProps {
   onStake: (amount: string) => void,
+  lpLabel: string,
 }
 
 const StakeModal: React.FC<StakeModalProps> = ({
   isOpen,
   onDismiss,
   onStake,
+  lpLabel
 }) => {
 
   const [val, setVal] = useState('')
@@ -52,7 +54,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
           onSelectMax={handleSelectMax}
           onChange={handleChange}
           max={fullBalance}
-          symbol="STRN/ETH UNI-V2 LP"
+          symbol={`${lpLabel} UNI-V2 LP`}
         />
       </ModalContent>
       <ModalActions>

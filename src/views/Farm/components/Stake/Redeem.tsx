@@ -7,6 +7,7 @@ import {
 import { useWallet } from 'use-wallet'
 
 import useFarming from 'hooks/useFarming'
+import { getItemValue } from 'utils'
 
 const Redeem: React.FC<{ poolId: string }> = ({ poolId }) => {
     const { status } = useWallet()
@@ -25,7 +26,7 @@ const Redeem: React.FC<{ poolId: string }> = ({ poolId }) => {
                 />
             )
         }
-        if (!isRedeeming) {
+        if (!getItemValue(isRedeeming, poolId)) {
             return (
                 <Button
                     onClick={() => onRedeem(poolId)}
