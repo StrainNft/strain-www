@@ -5,4 +5,6 @@ export interface ContextValues {
   strnTokenBalance?: BigNumber,
   strnIncBalance?: BigNumber,
   strnXiotLpBalance?: BigNumber,
+  strnEthLpPoolBalance?: BigNumber,
+  strnXiotLpPoolBalance?: BigNumber
 }

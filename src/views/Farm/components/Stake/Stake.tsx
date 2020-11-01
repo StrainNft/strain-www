@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import numeral from 'numeral'
 import {
   Box,
   Button,
@@ -8,6 +7,8 @@ import {
   CardActions,
   CardContent,
   CardIcon,
+  Container,
+  Spacer,
 } from 'react-neu'
 import { useWallet } from 'use-wallet'
 
@@ -16,11 +17,14 @@ import Value from 'components/Value'
 
 import useFarming from 'hooks/useFarming'
 
-import { bnToDec, getItemValue } from 'utils'
 import StakeModal from './components/StakeModal'
 import UnstakeModal from './components/UnstakeModal'
 import styled from 'styled-components'
 import useApproval from 'hooks/useApproval'
+import useBalances from 'hooks/useBalances'
+import Split from 'components/Split'
+import { StyledSubtitle } from 'components/PageHeader/PageHeader'
+import { getItemValue } from 'utils'
 
 const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpImage?: string }> = ({ poolId, lpEmoji, lpImage, lpLabel }) => {
   const [stakeModalIsOpen, setStakeModalIsOpen] = useState(false)
@@ -33,11 +37,27 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     isUnstaking,
     onStake,
     onUnstake,
-    stakedBalance,
     strnEthPoolAddress,
-    onRedeem
   } = useFarming()
 
+  const {
+    strnEthLpBalance,
+    strnXiotLpBalance,
+    strnEthLpPoolBalance,
+    strnXiotLpPoolBalance
+  } = useBalances()
+
+  // need better way to get pool specific data
+  const sigDigits = poolId === "0" ? 2 : 8;
+  const poolBalance = useMemo(() => {
+    // need better way to get specific pool balance
+    return poolId === "0" ? strnEthLpPoolBalance : strnXiotLpPoolBalance
+  }, [strnEthLpPoolBalance, strnXiotLpPoolBalance])
+
+  const walletBalance = useMemo(() => {
+    // need better way to get specific pool balance
+    return poolId === "0" ? strnEthLpBalance : strnXiotLpBalance
+  }, [strnEthLpBalance, strnXiotLpBalance])
 
   const { isApproved, isApproving, onApprove } = useApproval(
     getPoolLPAddress(poolId),
@@ -52,7 +72,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     onApprove,
     setConfirmTxModalIsOpen,
   ])
-  
+
 
   const handleDismissStakeModal = useCallback(() => {
     setStakeModalIsOpen(false)
@@ -73,14 +93,6 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   }, [
     handleDismissUnstakeModal,
     onUnstake,
-  ])
-
-  const handleOnExit = useCallback(() => {
-    onRedeem(poolId)
-    handleDismissUnstakeModal()
-  }, [
-    handleDismissUnstakeModal,
-    onRedeem,
   ])
 
   const handleStakeClick = useCallback(() => {
@@ -140,14 +152,14 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     status,
   ])
 
-  const ExitButton = useMemo(() => {
-    const hasStaked = stakedBalance && stakedBalance.toNumber() > 0
+  const UnstakeButton = useMemo(() => {
+    const hasStaked = poolBalance && poolBalance.toNumber() > 0
     if (status !== 'connected' || !hasStaked) {
       return (
         <Button
           disabled
           full
-          text="Exit"
+          text="Unstake"
           variant="secondary"
         />
       )
@@ -157,7 +169,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         <Button
           disabled
           full
-          text="Exit..."
+          text="Unstaking..."
           variant="secondary"
         />
       )
@@ -165,8 +177,8 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     return (
       <Button
         full
-        onClick={() => onRedeem(poolId)}
-        text="Exit"
+        onClick={handleUnstakeClick}
+        text="Unstake"
         variant="secondary"
       />
     )
@@ -178,12 +190,20 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   ])
 
   const formattedStakedBalance = useMemo(() => {
-    if (stakedBalance) {
-      return numeral(bnToDec(stakedBalance)).format('0.00a')
+    if (poolBalance) {
+      return poolBalance.gt(0) ? poolBalance.toFixed(sigDigits) : "0.00"
     } else {
       return '--'
     }
-  }, [stakedBalance])
+  }, [poolBalance])
+
+  const formattedWalletBalance = useMemo(() => {
+    if (walletBalance) {
+      return walletBalance.gt(0) ? walletBalance.toFixed(sigDigits) : "0.00"
+    } else {
+      return '--'
+    }
+  }, [walletBalance])
 
   const StyledImage = styled.img`
     display: block;
@@ -193,18 +213,30 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   return (
     <>
       <Card>
+        <Container size="sm">
+          <Spacer />
+          <StyledSubtitle>{`${lpLabel} LP `}</StyledSubtitle>
+        </Container>
         <CardIcon>{lpEmoji ? lpEmoji : <StyledImage src={require(`../../../../assets/${lpImage}`)} />}</CardIcon>
         <CardContent>
           <Box
             alignItems="center"
-            column
+            row
           >
-            {/*<Value value={formattedStakedBalance} />*/}
-            <Label text={`Staked LP ${lpLabel} Tokens`} />
+            <Split>
+              <>
+                <Value value={formattedStakedBalance} />
+                <Label text={`Staked`} />
+              </>
+              <>
+                <Value value={formattedWalletBalance} />
+                <Label text={`Wallet`} />
+              </>
+            </Split>
           </Box>
         </CardContent>
         <CardActions>
-          {ExitButton}
+          {UnstakeButton}
           {StakeButton}
         </CardActions>
       </Card>
@@ -213,6 +245,14 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         onDismiss={handleDismissStakeModal}
         onStake={handleOnStake}
         lpLabel={lpLabel}
+        poolId={poolId}
+      />
+      <UnstakeModal
+        isOpen={unstakeModalIsOpen}
+        onDismiss={handleDismissUnstakeModal}
+        onUnstake={handleOnUnstake}
+        lpLabel={lpLabel}
+        poolId={poolId}
       />
     </>
   )
