@@ -10,4 +10,4 @@ export const strnIncentivizer = '0x19Bf9bef453f57983319Eb3033a95a7aa7DB764d'
 // src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
 export const strnXiotLP = '0xae14831467c8d0e3153aba2ea009bcdc485125a2'
 export const strnEthPool = '0x313123a6e2e3ca0ee2c5a6e113a34184f64f533b'
-export const strnXiotPool = '0x8df28890D12bDd52a18C27ece7301C77Eab59A17'
+export const strnXiotPool = '0xD8E24D48BE781eF0A4381e7B7c14969Df880CD56'

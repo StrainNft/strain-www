@@ -75,7 +75,7 @@ const Providers: React.FC = ({ children }) => {
       borderRadius: 28,
     })
   }, [])
-  const chainId = 1;
+  const chainId = 4;
   return (
     <ThemeProvider
       darkModeEnabled={darkModeSetting}
