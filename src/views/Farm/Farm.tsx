@@ -48,6 +48,7 @@ const Farm: React.FC = () => {
         </Split>
         <Spacer size="lg" />
         <RedeemButton poolId={"1"} />
+        <Spacer size="lg" />
         <Separator />
       </Container>
     </Page>
