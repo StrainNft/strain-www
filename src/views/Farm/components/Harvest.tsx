@@ -8,6 +8,8 @@ import {
   CardActions,
   CardContent,
   CardIcon,
+  Container,
+  Spacer,
 } from 'react-neu'
 import { useWallet } from 'use-wallet'
 
@@ -17,6 +19,7 @@ import Value from 'components/Value'
 import useFarming from 'hooks/useFarming'
 
 import { bnToDec, getItemValue } from 'utils'
+import { StyledSubtitle } from 'components/PageHeader/PageHeader'
 
 const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
   const {
@@ -74,6 +77,10 @@ const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
 
   return (
     <Card>
+      <Container size="sm">
+        <Spacer />
+        <StyledSubtitle>Earn STRN</StyledSubtitle>
+      </Container>
       <CardIcon>🧬</CardIcon>
       <CardContent>
         <Box

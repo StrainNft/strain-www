@@ -22,32 +22,32 @@ const Farm: React.FC = () => {
       <Container>
         <PageHeader
           imgSrc=""
-          subtitle="Stake LP tokens to earn STRN"
+          subtitle="Stake STRN/ETH LP tokens to earn STRN"
           title=""
         />
         <Split>
           <StakeCard poolId={"0"} lpEmoji={'🔒'} lpLabel={'STRN/ETH'} />
-          <StakeCard poolId={"1"} lpImage={'strain-xiotri-sm.png'} lpLabel={'STRN/XIOT'} />
-        </Split>
-        <Spacer />
-        <Split>
-          <RedeemButton poolId={"0"} />
-          <RedeemButton poolId={"1"} />
+          <HarvestCard poolId={"0"} />
         </Split>
         <Spacer size="lg" />
-        <Separator />
+        <RedeemButton poolId={"0"} />
+        <Spacer />
+        <Spacer size="lg" />
+
       </Container>
       <Container>
         <Spacer size="lg" />
         <PageHeader
           imgSrc=""
-          subtitle="Total earned STRN"
+          subtitle="Stake STRN/XIOT LP tokens to earn STRN"
           title=""
         />
         <Split>
+          <StakeCard poolId={"1"} lpImage={'strain-xiotri-sm.png'} lpLabel={'STRN/XIOT'} />
           <HarvestCard poolId={"1"} />
         </Split>
         <Spacer size="lg" />
+        <RedeemButton poolId={"1"} />
         <Separator />
       </Container>
     </Page>

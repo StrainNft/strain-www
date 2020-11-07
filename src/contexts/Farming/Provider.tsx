@@ -47,6 +47,15 @@ const Provider: React.FC = ({ children }) => {
     return incentivizerAddresses[Number(poolId)]
   }
 
+  const getIncContract = (poolId: string) => {
+    if (yam) {
+      if (poolId === "0") {
+        return yam.contracts.strneth_pool
+      }
+      return yam.contracts.strnxiot_pool
+    }
+  }
+
   const fetchEarnedBalance = useCallback(async () => {
     if (!account || !yam) return
     const balance = await getEarned(yam, yam.contracts.strneth_pool, account)
@@ -78,7 +87,7 @@ const Provider: React.FC = ({ children }) => {
   const handleHarvest = useCallback(async (poolId) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await harvest(yam, account, () => {
+    await harvest(getIncContract(poolId), yam.web3.eth, account, () => {
       setConfirmTxModalIsOpen(false)
       setIsHarvesting(setItemValue(isHarvesting, poolId, true))
     })
@@ -93,7 +102,7 @@ const Provider: React.FC = ({ children }) => {
   const handleRedeem = useCallback(async (poolId) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await redeem(yam, poolId, account, () => {
+    await redeem(getIncContract(poolId), yam.web3.eth, "0", account, () => {
       setConfirmTxModalIsOpen(false)
       setIsRedeeming(setItemValue(isRedeeming, poolId, true))
     })
@@ -108,7 +117,7 @@ const Provider: React.FC = ({ children }) => {
   const handleStake = useCallback(async (poolId: string, amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await stake(yam, poolId, amount, account, () => {
+    await stake(getIncContract(poolId), yam.web3.eth, "0", amount, account, () => {
       setConfirmTxModalIsOpen(false)
       setIsStaking(setItemValue(isStaking, poolId, true))
     })
@@ -123,7 +132,7 @@ const Provider: React.FC = ({ children }) => {
   const handleUnstake = useCallback(async (poolId: string, amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
-    await unstake(yam, poolId, amount, account, () => {
+    await unstake(getIncContract(poolId), yam.web3.eth, "0", amount, account, () => {
       setConfirmTxModalIsOpen(false)
       setIsUnstaking(setItemValue(isUnstaking, poolId, true))
     })
