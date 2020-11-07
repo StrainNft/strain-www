@@ -8,8 +8,8 @@ import {
   strnEthLP as strnLPTokenAddress,
   strnIncentivizer as strnEthIncAddress,
   strnXiotLP as strnXiotLPTokenAddress,
-  strnEthPool as strnEthPoolAddress,
-  strnXiotPool as strnXiotPoolAddress,
+  strnIncentivizer as strnEthPoolAddress,
+  strnXiotIncentivizer as strnXiotPoolAddress,
 } from 'constants/tokenAddresses'
 import { getBalance } from 'utils'
 

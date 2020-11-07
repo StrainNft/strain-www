@@ -8,7 +8,7 @@ import {
   strnEthLP as strnEthLPAddress,
   strnIncentivizer,
   strnXiotLP as strnXiotLPAddress,
-  strnXiotPool
+  strnXiotIncentivizer
 } from 'constants/tokenAddresses'
 import useYam from 'hooks/useYam'
 
@@ -36,15 +36,13 @@ const Provider: React.FC = ({ children }) => {
 
   const yam = useYam()
   const { account } = useWallet()
-
-  //const strnEthPoolAddress = yam ? yam.contracts.strneth_pool.options.address : ''
-
+  
   const lpAddresses = [strnEthLPAddress, strnXiotLPAddress]
   const getPoolLPAddress = (poolId: string) => {
     return lpAddresses[Number(poolId)]
   }
   
-  const incentivizerAddresses = [strnIncentivizer, strnXiotPool]
+  const incentivizerAddresses = [strnIncentivizer, strnXiotIncentivizer]
   const getIncentivizerAddress = (poolId: string) => {
     return incentivizerAddresses[Number(poolId)]
   }
