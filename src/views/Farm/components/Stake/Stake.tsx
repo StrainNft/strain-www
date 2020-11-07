@@ -37,7 +37,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     isUnstaking,
     onStake,
     onUnstake,
-    strnEthPoolAddress,
+    getIncentivizerAddress,
   } = useFarming()
 
   const {
@@ -61,7 +61,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
 
   const { isApproved, isApproving, onApprove } = useApproval(
     getPoolLPAddress(poolId),
-    strnEthPoolAddress,
+    getIncentivizerAddress(poolId),
     () => setConfirmTxModalIsOpen(false)
   )
 

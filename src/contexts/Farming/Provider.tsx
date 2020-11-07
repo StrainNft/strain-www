@@ -6,7 +6,9 @@ import { useWallet } from 'use-wallet'
 import ConfirmTransactionModal from 'components/ConfirmTransactionModal'
 import {
   strnEthLP as strnEthLPAddress,
-  strnXiotLP as strnXiotLPAddress
+  strnIncentivizer,
+  strnXiotLP as strnXiotLPAddress,
+  strnXiotPool
 } from 'constants/tokenAddresses'
 import useYam from 'hooks/useYam'
 
@@ -35,11 +37,16 @@ const Provider: React.FC = ({ children }) => {
   const yam = useYam()
   const { account } = useWallet()
 
-  const strnEthPoolAddress = yam ? yam.contracts.strneth_pool.options.address : ''
+  //const strnEthPoolAddress = yam ? yam.contracts.strneth_pool.options.address : ''
 
   const lpAddresses = [strnEthLPAddress, strnXiotLPAddress]
   const getPoolLPAddress = (poolId: string) => {
     return lpAddresses[Number(poolId)]
+  }
+  
+  const incentivizerAddresses = [strnIncentivizer, strnXiotPool]
+  const getIncentivizerAddress = (poolId: string) => {
+    return incentivizerAddresses[Number(poolId)]
   }
 
   const fetchEarnedBalance = useCallback(async () => {
@@ -140,7 +147,6 @@ const Provider: React.FC = ({ children }) => {
     <Context.Provider value={{
       getPoolLPAddress,
       setConfirmTxModalIsOpen,
-      strnEthPoolAddress,
       earnedBalance,
       isHarvesting,
       isRedeeming,
@@ -151,6 +157,7 @@ const Provider: React.FC = ({ children }) => {
       onStake: handleStake,
       onUnstake: handleUnstake,
       stakedBalance,
+      getIncentivizerAddress,
     }}>
       {children}
       <ConfirmTransactionModal isOpen={confirmTxModalIsOpen} />
