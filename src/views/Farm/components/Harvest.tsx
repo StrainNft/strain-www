@@ -33,6 +33,7 @@ const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
   const { status } = useWallet()
 
   const HarvestAction = useMemo(() => {
+    const isClaiming = getItemValue(isHarvesting, poolId) || getItemValue(isRedeeming, poolId);
     if (status !== 'connected') {
       return (
         <Button
@@ -43,7 +44,7 @@ const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
         />
       )
     }
-    if (!getItemValue(isHarvesting, poolId)) {
+    if (!isClaiming) {
       return (
         <Button
           full
@@ -52,7 +53,7 @@ const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
         />
       )
     }
-    if (getItemValue(isHarvesting, poolId)) {
+    if (isClaiming) {
       return (
         <Button
           disabled
@@ -63,9 +64,10 @@ const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
       )
     }
   }, [
-    isHarvesting,
-    isRedeeming,
+    String(isHarvesting),
+    String(isRedeeming),
     onHarvest,
+    status
   ])
 
   const formattedEarnedBalance = useMemo(() => {
@@ -81,7 +83,7 @@ const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
     <Card>
       <Container size="sm">
         <Spacer />
-        <StyledSubtitle>Earn STRN</StyledSubtitle>
+        <StyledSubtitle>Earned STRN</StyledSubtitle>
       </Container>
       <CardIcon>🧬</CardIcon>
       <CardContent>

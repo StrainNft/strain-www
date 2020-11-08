@@ -43,7 +43,7 @@ const Redeem: React.FC<{ poolId: string }> = ({ poolId }) => {
             />
         )
     }, [
-        isRedeeming,
+        String(isRedeeming),
         onRedeem,
     ])
 

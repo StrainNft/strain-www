@@ -22,7 +22,7 @@ import {
 } from 'yam-sdk/utils'
 
 import Context from './Context'
-import { setItemValue } from 'utils'
+import { getItemValue, setItemValue } from 'utils'
 
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
@@ -84,9 +84,11 @@ const Provider: React.FC = ({ children }) => {
   const handleHarvest = useCallback(async (poolId) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
+    setIsHarvesting(setItemValue(isHarvesting, poolId, true))
     await harvest(getIncContract(poolId), yam.web3.eth, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsHarvesting(setItemValue(isHarvesting, poolId, true))
+    }).catch(e => {
+      console.error(e)
     })
     setIsHarvesting(setItemValue(isHarvesting, poolId, false))
   }, [
@@ -99,9 +101,12 @@ const Provider: React.FC = ({ children }) => {
   const handleRedeem = useCallback(async (poolId) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
+    setIsRedeeming(setItemValue(isRedeeming, poolId, true))
     await redeem(getIncContract(poolId), yam.web3.eth, "0", account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsRedeeming(setItemValue(isRedeeming, poolId, true))
+    }).catch(e => {
+      console.error(e)
+      setIsRedeeming(setItemValue(isRedeeming, poolId, false))
     })
     setIsRedeeming(setItemValue(isRedeeming, poolId, false))
   }, [
@@ -114,9 +119,12 @@ const Provider: React.FC = ({ children }) => {
   const handleStake = useCallback(async (poolId: string, amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
+    setIsStaking(setItemValue(isStaking, poolId, true))
     await stake(getIncContract(poolId), yam.web3.eth, "0", amount, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsStaking(setItemValue(isStaking, poolId, true))
+    }).catch(e => {
+      console.error(e)
+      setIsStaking(setItemValue(isStaking, poolId, false))
     })
     setIsStaking(setItemValue(isStaking, poolId, false))
   }, [
@@ -129,9 +137,12 @@ const Provider: React.FC = ({ children }) => {
   const handleUnstake = useCallback(async (poolId: string, amount: string) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
+    setIsUnstaking(setItemValue(isUnstaking, poolId, true))
     await unstake(getIncContract(poolId), yam.web3.eth, "0", amount, account, () => {
       setConfirmTxModalIsOpen(false)
-      setIsUnstaking(setItemValue(isUnstaking, poolId, true))
+    }).catch(e => {
+      console.error(e)
+      setIsUnstaking(setItemValue(isUnstaking, poolId, false))  
     })
     setIsUnstaking(setItemValue(isUnstaking, poolId, false))
   }, [

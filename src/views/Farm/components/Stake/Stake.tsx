@@ -148,6 +148,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   }, [
     handleStakeClick,
     isApproving,
+    isStaking,
     handleApprove,
     status,
   ])
@@ -185,6 +186,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   }, [
     handleUnstakeClick,
     isApproving,
+    isUnstaking,
     handleApprove,
     status,
   ])
