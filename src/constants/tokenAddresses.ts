@@ -26,9 +26,9 @@ export const strnXiotIncentivizer = '0xD8E24D48BE781eF0A4381e7B7c14969Df880CD56'
 
 export const strn = '0x78D5980a293010339e3Fe09f860230733A327A4e'
 export const strnEthLP = '0xf45d6a4c2274f3334bbaed91ce64cca6ec8f4733'
-export const strnIncentivizer = '0x366ffb9f819172130F469b443fc77eF4455C2Ff1'
+export const strnIncentivizer = '0x25d766A7e469741BE43C1dAD8439AF74a8344613'
 // make sure to update the addresses in json files
 // src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
 // src/yam-sdk/lib/clean_build/contracts/STRNXIOTIncentivizer.json
 export const strnXiotLP = '0x42b230455c2bcaf3e4a02a5aa34e810b1dc56fba'
-export const strnXiotIncentivizer = '0x48976041B6Bc64a1dBBc5c23058e10416aC83e80'
+export const strnXiotIncentivizer = '0xF70dE70202F326EA79f85C90e635F0abE338d73d'
