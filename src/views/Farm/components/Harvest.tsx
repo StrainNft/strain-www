@@ -20,10 +20,11 @@ import useFarming from 'hooks/useFarming'
 
 import { bnToDec, getItemValue } from 'utils'
 import { StyledSubtitle } from 'components/PageHeader/PageHeader'
+import BigNumber from 'bignumber.js'
 
 const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
   const {
-    earnedBalance,
+    getEarnedBalances,
     isHarvesting,
     isRedeeming,
     onHarvest,
@@ -68,12 +69,13 @@ const Harvest: React.FC<{ poolId: string }> = ({ poolId }) => {
   ])
 
   const formattedEarnedBalance = useMemo(() => {
-    if (earnedBalance) {
-      return numeral(bnToDec(earnedBalance)).format('0.00a')
+    const balance = getEarnedBalances(poolId)
+    if (balance) {
+      return numeral(bnToDec(balance)).format('0.00a')
     } else {
       return '--'
     }
-  }, [earnedBalance])
+  }, [getEarnedBalances])
 
   return (
     <Card>

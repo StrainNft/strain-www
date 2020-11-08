@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { createContext } from 'react'
 
 import { ContextValues } from './types'
@@ -9,7 +10,8 @@ const Context = createContext<ContextValues>({
   onRedeem: () => {},
   onStake: () => {},
   onUnstake: () => {},
-  getIncentivizerAddress: () => ''
+  getIncentivizerAddress: () => '',
+  getEarnedBalances: () => new BigNumber(0),
 })
 
 export default Context

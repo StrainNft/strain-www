@@ -39,7 +39,7 @@ const WalletModal: React.FC<ModalProps> = ({
   } = useBalances()
 
   const {
-    earnedBalance
+    getEarnedBalances
   } = useFarming()
 
   const getDisplayBalance = useCallback((value?: BigNumber) => {
@@ -83,12 +83,15 @@ const WalletModal: React.FC<ModalProps> = ({
   }, [strnXiotLpPoolBalance])
 
   const formattedEarnedBalance = useMemo(() => {
-    if (earnedBalance) {
-      return numeral(bnToDec(earnedBalance)).format('0.00a')
+    if (getEarnedBalances) {
+      const strnPoolBalance = getEarnedBalances("0")
+      const xiotPoolBalance = getEarnedBalances("1")
+      const total = strnPoolBalance.plus(xiotPoolBalance)
+      return numeral(bnToDec(total)).format('0.00a')
     } else {
       return '--'
     }
-  }, [earnedBalance])
+  }, [getEarnedBalances])
 
   const handleSignOut = useCallback(() => {
     reset()

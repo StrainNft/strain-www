@@ -31,12 +31,12 @@ const Provider: React.FC = ({ children }) => {
   const [isStaking, setIsStaking] = useState([false, false])
   const [isUnstaking, setIsUnstaking] = useState([false, false])
 
-  const [earnedBalance, setEarnedBalance] = useState<BigNumber>()
-  const [stakedBalance, setStakedBalance] = useState<BigNumber>()
+  const [earnedStrnPoolBalances, setEarnedStrnPoolBalance] = useState<BigNumber>()
+  const [earnedXiotPoolBalances, setEarnedXiotPoolBalance] = useState<BigNumber>()
 
   const yam = useYam()
   const { account } = useWallet()
-  
+
   const lpAddresses = [strnEthLPAddress, strnXiotLPAddress]
   const getPoolLPAddress = (poolId: string) => {
     return lpAddresses[Number(poolId)]
@@ -45,6 +45,10 @@ const Provider: React.FC = ({ children }) => {
   const incentivizerAddresses = [strnIncentivizer, strnXiotIncentivizer]
   const getIncentivizerAddress = (poolId: string) => {
     return incentivizerAddresses[Number(poolId)]
+  }
+
+  const getSetRewardsBalanceMethod = (poolId: string = "0") => {
+    return [setEarnedStrnPoolBalance, setEarnedXiotPoolBalance][Number(poolId)]
   }
 
   const getIncContract = (poolId: string) => {
@@ -56,32 +60,25 @@ const Provider: React.FC = ({ children }) => {
     }
   }
 
-  const fetchEarnedBalance = useCallback(async () => {
+  const getEarnedBalances = (poolId: string): BigNumber => {
+    return [earnedStrnPoolBalances, earnedXiotPoolBalances][Number(poolId)] || new BigNumber(0)
+  }
+
+  const fetchEarnedBalance = useCallback(async (poolId) => {
     if (!account || !yam) return
-    const balance = await getEarned(yam, yam.contracts.strneth_pool, account)
-    setEarnedBalance(balance)
+    const balance = await getEarned(yam, getIncContract(poolId), account)
+    getSetRewardsBalanceMethod(poolId)(balance)
   }, [
     account,
-    setEarnedBalance,
+    setEarnedStrnPoolBalance,
+    setEarnedXiotPoolBalance,
     yam
   ])
 
-  const fetchStakedBalance = useCallback(async () => {
-    if (!account || !yam) return
-    const balance = await getStaked(yam, yam.contracts.strneth_pool, account)
-    setStakedBalance(balance)
-  }, [
-    account,
-    setStakedBalance,
-    yam
-  ])
-
-  const fetchBalances = useCallback(async () => {
-    fetchEarnedBalance()
-    fetchStakedBalance()
+  const fetchBalances = useCallback(async (poolId) => {
+    fetchEarnedBalance(poolId)
   }, [
     fetchEarnedBalance,
-    fetchStakedBalance,
   ])
 
   const handleHarvest = useCallback(async (poolId) => {
@@ -145,8 +142,12 @@ const Provider: React.FC = ({ children }) => {
   ])
 
   useEffect(() => {
-    fetchBalances()
-    let refreshInterval = setInterval(() => fetchBalances(), 10000)
+    fetchBalances("0")
+    fetchBalances("1")
+    let refreshInterval = setInterval(() => {
+      fetchBalances("0")
+      fetchBalances("1")
+    }, 10000)
     return () => clearInterval(refreshInterval)
   }, [fetchBalances])
 
@@ -154,7 +155,7 @@ const Provider: React.FC = ({ children }) => {
     <Context.Provider value={{
       getPoolLPAddress,
       setConfirmTxModalIsOpen,
-      earnedBalance,
+      getEarnedBalances,
       isHarvesting,
       isRedeeming,
       isStaking,
@@ -163,7 +164,6 @@ const Provider: React.FC = ({ children }) => {
       onRedeem: handleRedeem,
       onStake: handleStake,
       onUnstake: handleUnstake,
-      stakedBalance,
       getIncentivizerAddress,
     }}>
       {children}

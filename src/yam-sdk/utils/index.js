@@ -141,9 +141,6 @@ export const getPoolContracts = async (yam) => {
 }
 
 export const getEarned = async (yam, pool, account) => {
-  //const scalingFactor = new BigNumber(await yam.contracts.yamV3.methods.yamsScalingFactor().call())
-  const earned = new BigNumber(await pool.methods.earned(account).call())
-  //return earned.multipliedBy(scalingFactor.dividedBy(new BigNumber(10).pow(18)))
   return yam.toBigN(await pool.methods.earned(account).call())
 }
 
