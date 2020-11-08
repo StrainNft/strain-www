@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import {
   Box,
@@ -17,6 +17,13 @@ import StakeCard from './components/Stake'
 import RedeemButton from './components/Stake/Redeem'
 
 const Farm: React.FC = () => {
+  const [showDefaultXiotri, setShowDefaultXiotri] = useState(true)
+
+  useEffect(() => {
+    let imagePicker = setInterval(() => setShowDefaultXiotri(!showDefaultXiotri), 60 * 1000)
+    return () => clearInterval(imagePicker)
+  },[showDefaultXiotri])
+
   return (
     <Page>
       <Container>
@@ -43,7 +50,7 @@ const Farm: React.FC = () => {
           title=""
         />
         <Split>
-          <StakeCard poolId={"1"} lpImage={'strain-xiotri-sm.png'} lpLabel={'STRN/XIOT'} />
+          <StakeCard poolId={"1"} lpImage={showDefaultXiotri ? 'strain-xiotri-sm.png' : 'strain-xiotri-sm-2.png'} lpLabel={'STRN/XIOT'} />
           <HarvestCard poolId={"1"} />
         </Split>
         <Spacer size="lg" />
