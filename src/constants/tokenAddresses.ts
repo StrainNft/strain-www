@@ -13,7 +13,9 @@ export const chainId = 4
 export const strn = '0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f'
 export const strnEthLP = '0xa198f36e3648dd16e75d721f0c6516e00e9ca053'
 export const strnIncentivizer = '0x19Bf9bef453f57983319Eb3033a95a7aa7DB764d'
+// make sure to update the addresses in json files
 // src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
+//src/yam-sdk/lib/clean_build/contracts/STRNXIOTIncentivizer.json
 export const strnXiotLP = '0xae14831467c8d0e3153aba2ea009bcdc485125a2'
 export const strnXiotIncentivizer = '0xD8E24D48BE781eF0A4381e7B7c14969Df880CD56'
 */
@@ -22,9 +24,11 @@ export const strnXiotIncentivizer = '0xD8E24D48BE781eF0A4381e7B7c14969Df880CD56'
 
 // rinkeby
 
-export const strn = '0x710CCAA8748dF2cf2E60c1633C9f17D302083e09'
-export const strnEthLP = '0x4de1c71fef9e2c9782e6645f04802bd75c83bdf0'
-export const strnIncentivizer = '0x1811F52fdfCD08aFA137Ff6c70055a17d6147d0E'
+export const strn = '0x78D5980a293010339e3Fe09f860230733A327A4e'
+export const strnEthLP = '0xf45d6a4c2274f3334bbaed91ce64cca6ec8f4733'
+export const strnIncentivizer = '0x00307fadb2A1e937DA99cd183e3E57a2cff784eD'
+// make sure to update the addresses in json files
 // src/yam-sdk/lib/clean_build/contracts/STRNIncentivizer.json
-export const strnXiotLP = '0xae14831467c8d0e3153aba2ea009bcdc485125a2'
-export const strnXiotIncentivizer = '0xD8E24D48BE781eF0A4381e7B7c14969Df880CD56'
+// src/yam-sdk/lib/clean_build/contracts/STRNXIOTIncentivizer.json
+export const strnXiotLP = '0x42b230455c2bcaf3e4a02a5aa34e810b1dc56fba'
+export const strnXiotIncentivizer = '0xA06B7b3323142377f93f00fD33216e2E2E05E272'
