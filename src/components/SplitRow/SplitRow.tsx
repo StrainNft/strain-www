@@ -3,19 +3,19 @@ import { Spacer } from 'react-neu'
 import styled from 'styled-components'
 
 const SplitRow: React.FC = ({ children }) => {
-    const l = React.Children.toArray(children).length
-    return (
-        <StyledSplit>
-            {React.Children.map(children, (child, i) => (
-                <>
-                    <StyledSplitColumn>
-                        {child}
-                    </StyledSplitColumn>
-                    {i < l - 1 && <Spacer />}
-                </>
-            ))}
-        </StyledSplit>
-    )
+  const l = React.Children.toArray(children).length
+  return (
+    <StyledSplit>
+      {React.Children.map(children, (child, i) => (
+        <>
+          <StyledSplitColumn>
+            {child}
+          </StyledSplitColumn>
+          {i < l - 1 && <Spacer />}
+        </>
+      ))}
+    </StyledSplit>
+  )
 }
 
 const StyledSplit = styled.div`

@@ -23,26 +23,26 @@ const TokenInput: React.FC<TokenInputProps> = ({
   return (
     <StyledTokenInput>
       <StyledMaxText>{max.toLocaleString()} {symbol} Available</StyledMaxText>
-        <StyledDivContainer>
-          <Input
-            endAdornment={(
-              <StyledTokenAdornmentWrapper>
-                <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
-                <StyledSpacer />
-                <div>
-                  <Button
-                    onClick={onSelectMax}
-                    size="sm"
-                    text="Max"
-                    variant="secondary"
-                  />
-                </div>
-              </StyledTokenAdornmentWrapper>
-            )}
-            onChange={onChange}
-            placeholder="0"
-            value={value}
-          /></StyledDivContainer>
+      <StyledDivContainer>
+        <Input
+          endAdornment={(
+            <StyledTokenAdornmentWrapper>
+              <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
+              <StyledSpacer />
+              <div>
+                <Button
+                  onClick={onSelectMax}
+                  size="sm"
+                  text="Max"
+                  variant="secondary"
+                />
+              </div>
+            </StyledTokenAdornmentWrapper>
+          )}
+          onChange={onChange}
+          placeholder="0"
+          value={value}
+        /></StyledDivContainer>
     </StyledTokenInput>
   )
 };
