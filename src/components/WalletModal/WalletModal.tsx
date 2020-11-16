@@ -23,6 +23,7 @@ import Split from 'components/Split'
 import useBalances from 'hooks/useBalances'
 import useFarming from 'hooks/useFarming'
 import { bnToDec } from 'utils'
+import useStaking from 'hooks/useStaking'
 
 const WalletModal: React.FC<ModalProps> = ({
   isOpen,
@@ -42,6 +43,11 @@ const WalletModal: React.FC<ModalProps> = ({
   const {
     getEarnedBalances
   } = useFarming()
+
+  const {
+    totalStaked,
+    earnedStxpPoolBalance
+  } = useStaking()
 
   const getDisplayBalance = useCallback((value?: BigNumber) => {
     if (value) {
@@ -66,6 +72,23 @@ const WalletModal: React.FC<ModalProps> = ({
       return '--'
     }
   }, [strnEthLpPoolBalance])
+
+  const formattedStxpPoolBalance = useMemo(() => {
+    if (earnedStxpPoolBalance) {
+      return numeral(bnToDec(earnedStxpPoolBalance)).format('0.00a')
+    } else {
+      return '--'
+    }
+  }, [earnedStxpPoolBalance])
+
+  const formattedTotalStakedStrnBalance = useMemo(() => {
+    if (totalStaked) {
+      return numeral(bnToDec(totalStaked)).format('0.00a')
+    } else {
+      return '--'
+    }
+  }, [totalStaked])
+
 
   const formattedStrnXiotLPBalance = useMemo(() => {
     if (strnXiotLpBalance) {
@@ -114,7 +137,7 @@ const WalletModal: React.FC<ModalProps> = ({
               icon="🍯"
               label="STXP balance"
               value={getDisplayBalance(stxpTokenBalance)}
-              />
+            />
           </Box>
           <Box column>
             <FancyValue
@@ -140,11 +163,11 @@ const WalletModal: React.FC<ModalProps> = ({
               label="Claimable STRN"
               value={formattedEarnedBalance}
             />
-            <Spacer />            
+            <Spacer />
             <FancyValue
               icon="🍯"
               label="Claimable STXP"
-              value={formattedEarnedBalance}
+              value={formattedStxpPoolBalance}
             />
           </Box>
           <Box column>
@@ -159,6 +182,13 @@ const WalletModal: React.FC<ModalProps> = ({
               label="Staked STRN/XIOT Tokens"
               value={formattedStrnXiotPoolBalance}
             />
+            <Spacer />
+            <FancyValue
+              icon="🧬"
+              label="Staked STRN Tokens"
+              value={formattedTotalStakedStrnBalance}
+            />
+
           </Box>
         </Split>
         <Spacer />

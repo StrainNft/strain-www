@@ -144,7 +144,7 @@ export const getSingleStakeBalances = async (pool, account) => {
   //return await pool.methods.stakes(account).call()
   return [
     {
-      amount: new BigNumber('100000000000000000'),
+      amount: new BigNumber('10000000000000000000'),
       lockDate: 1605585551,
       shares: new BigNumber('1000')
     }

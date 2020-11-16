@@ -61,7 +61,6 @@ const Provider: React.FC = ({ children }) => {
   const fetchEarnedBalance = useCallback(async () => {
     if (!account || !yam) return
     const balance = await getSingleEarned(yam, yam.contracts.stxpInc_pool, account)
-    console.log('balance earned', String(balance))
     setEarnedStxpPoolBalance(balance)    
   }, [
     account,
