@@ -69,6 +69,10 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
     setVal(e.currentTarget.value)
   }, [setVal])
 
+  const onMaxDuration = useCallback(() => {
+    if (maxTimestamp) setDurationDate(new Date(maxTimestamp.toNumber() * 1000))
+  }, [setDurationDate, maxTimestamp])
+
   const handleSelectMax = useCallback(() => {
     setVal(String(fullBalance || 0))
   }, [fullBalance, setVal])
@@ -78,8 +82,10 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
   }, [onStake, val])
 
   const StyledCenter = styled.div`
+    display: flex;
     justify-content: center;
-    align-self: center;
+    align-items: flex-start;
+    min-height: 30vh;
   `
   const StyledLabel = styled.div`
     font-size: 16px;
@@ -94,7 +100,12 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
     justify-content: space-between;
     padding-bottom: 0.25rem;    
   `
-
+  const MaxLockup = styled.span`
+    font-size: 16px;
+    color: ${props => props.theme.colors.primary.light};
+    text-decoration: underline;
+    cursor: pointer;
+  `
   return (
     <Modal isOpen={isOpen}>
       <ModalTitle text="Stake" />
@@ -105,6 +116,9 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
             <StyledLabelValue>{boost.toFixed(2)}</StyledLabelValue>
           </div>
           <div>
+            <MaxLockup
+              onClick={onMaxDuration}
+            >Max Lock Period</MaxLockup>
             <StyledLabel>Lock stake till:</StyledLabel>
             <StyledLabelValue>{durationDate?.toDateString()}</StyledLabelValue>
           </div>
