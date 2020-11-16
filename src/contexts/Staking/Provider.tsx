@@ -32,6 +32,7 @@ const Provider: React.FC = ({ children }) => {
   const [totalStaked, setTotakStaked] = useState<BigNumber>()
   const [earnedStxpPoolBalance, setEarnedStxpPoolBalance] = useState<BigNumber>()
   const [userStakes, setUserStakes] = useState<SingleStake[]>([])
+  const [withdrawStakeAmount, setWithdrawStakeAmount] = useState<BigNumber>()
   const [endTime, setEndTime] = useState<BigNumber>()
 
   const yam = useYam()
@@ -48,6 +49,8 @@ const Provider: React.FC = ({ children }) => {
     const totalStaked = balances.reduce((p, s) => p.plus(s.amount), new BigNumber(0))
     setTotakStaked(totalStaked)
     setUserStakes(balances)
+    // TODO: get total withdrawable stake
+    setWithdrawStakeAmount(new BigNumber(100))
   }, [
     account,
     setTotakStaked,
@@ -58,6 +61,7 @@ const Provider: React.FC = ({ children }) => {
   const fetchEarnedBalance = useCallback(async () => {
     if (!account || !yam) return
     const balance = await getSingleEarned(yam, yam.contracts.stxpInc_pool, account)
+    console.log('balance earned', String(balance))
     setEarnedStxpPoolBalance(balance)    
   }, [
     account,
@@ -169,7 +173,8 @@ const Provider: React.FC = ({ children }) => {
       getIncentivizerAddress,
       totalStaked,
       strnTokenAddress,
-      endTime
+      endTime,
+      withdrawStakeAmount,
     }}>
       {children}
       <ConfirmTransactionModal isOpen={confirmTxModalIsOpen} />

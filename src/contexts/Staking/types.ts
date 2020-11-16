@@ -15,4 +15,5 @@ export interface ContextValues {
   totalStaked?: BigNumber,
   strnTokenAddress: string,
   endTime?: BigNumber,
+  withdrawStakeAmount?: BigNumber
 }

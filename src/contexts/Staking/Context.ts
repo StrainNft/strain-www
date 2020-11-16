@@ -13,7 +13,8 @@ const Context = createContext<ContextValues>({
   strnTokenAddress: '',
   earnedStxpPoolBalance: new BigNumber(0),
   totalStaked: new BigNumber(0),
-  endTime: new BigNumber(0)
+  endTime: new BigNumber(0),
+  withdrawStakeAmount: new BigNumber(0)
 })
 
 export default Context

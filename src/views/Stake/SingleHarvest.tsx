@@ -15,26 +15,20 @@ import { useWallet } from 'use-wallet'
 
 import Label from 'components/Label'
 import Value from 'components/Value'
-
-import useFarming from 'hooks/useFarming'
-
-import { bnToDec, getItemValue } from 'utils'
+import { bnToDec } from 'utils'
 import { StyledSubtitle } from 'components/PageHeader/PageHeader'
-import BigNumber from 'bignumber.js'
-import { PoolIds } from 'constants/poolValues'
+import useStaking from 'hooks/useStaking'
 
 const Harvest: React.FC = () => {
   const {
-    getEarnedBalances,
+    earnedStxpPoolBalance,
     isHarvesting,
-    isRedeeming,
-    onHarvest,
-  } = useFarming()
+    onHarvest,    
+  } = useStaking()
 
   const { status } = useWallet()
 
   const HarvestAction = useMemo(() => {
-    const isClaiming = getItemValue(isHarvesting, PoolIds.STRN_SINGLE) || getItemValue(isRedeeming, PoolIds.STRN_SINGLE);
     if (status !== 'connected') {
       return (
         <Button
@@ -45,16 +39,16 @@ const Harvest: React.FC = () => {
         />
       )
     }
-    if (!isClaiming) {
+    if (!isHarvesting) {
       return (
         <Button
           full
-          onClick={() => onHarvest(PoolIds.STRN_SINGLE)}
+          onClick={() => onHarvest()}
           text="Claim"
         />
       )
     }
-    if (isClaiming) {
+    if (isHarvesting) {
       return (
         <Button
           disabled
@@ -66,19 +60,18 @@ const Harvest: React.FC = () => {
     }
   }, [
     String(isHarvesting),
-    String(isRedeeming),
     onHarvest,
     status
   ])
 
   const formattedEarnedBalance = useMemo(() => {
-    const balance = getEarnedBalances(PoolIds.STRN_SINGLE)
+    const balance = earnedStxpPoolBalance
     if (balance) {
       return numeral(bnToDec(balance)).format('0.00a')
     } else {
       return '--'
     }
-  }, [getEarnedBalances])
+  }, [earnedStxpPoolBalance])
 
   return (
     <Card>

@@ -11,7 +11,6 @@ import Split from 'components/Split'
 
 import SingleHarvestCard from './SingleHarvest'
 import SingleStakeCard from './SingleStake'
-import SingleRedeemButton from './SingleRedeem'
 
 const Stake: React.FC = () => {
 
@@ -28,7 +27,11 @@ const Stake: React.FC = () => {
           <SingleHarvestCard />
         </Split>
         <Spacer size="lg" />
-        <SingleRedeemButton />
+        <PageHeader
+          imgSrc=""
+          subtitle="Unstaking automatically claims STXP"
+          title=""
+        />
         <Spacer />
         <Spacer size="lg" />
 

@@ -40,12 +40,13 @@ const SingleStake: React.FC = () => {
     onUnstake,
     getIncentivizerAddress,
     totalStaked,
-    endTime
+    endTime,
+    withdrawStakeAmount,
   } = useStaking()
 
   const {
     strnTokenBalance,
-     } = useBalances()
+  } = useBalances()
 
 
   const { isApproved, isApproving, onApprove } = useApproval(
@@ -202,7 +203,7 @@ const SingleStake: React.FC = () => {
       return '--'
     }
   }, [])
-  
+
   return (
     <>
       <Card>
@@ -245,8 +246,8 @@ const SingleStake: React.FC = () => {
         isOpen={unstakeModalIsOpen}
         onDismiss={handleDismissUnstakeModal}
         onUnstake={handleOnUnstake}
-        lpLabel={'STRN'}
-        poolId={PoolIds.STRN_SINGLE}
+        label={'STRN'}
+        fullBalance={withdrawStakeAmount}
       />
     </>
   )

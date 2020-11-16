@@ -247,14 +247,14 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         onDismiss={handleDismissStakeModal}
         onStake={handleOnStake}
         label={`${lpLabel} UNI-V2 LP`}
-        fullBalance={poolBalance}
+        fullBalance={walletBalance}
       />
       <UnstakeModal
         isOpen={unstakeModalIsOpen}
         onDismiss={handleDismissUnstakeModal}
         onUnstake={handleOnUnstake}
-        lpLabel={`${lpLabel} UNI-V2 LP`}
-        poolId={poolId}
+        label={`${lpLabel} UNI-V2 LP`}
+        fullBalance={poolBalance}
       />
     </>
   )

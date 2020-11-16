@@ -78,6 +78,7 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
   }, [onStake, val])
 
   const StyledCenter = styled.div`
+    justify-content: center;
     align-self: center;
   `
   const StyledLabel = styled.div`
@@ -98,17 +99,17 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
     <Modal isOpen={isOpen}>
       <ModalTitle text="Stake" />
       <ModalContent>
+        <SpaceBetweenRow>
+          <div>
+            <StyledLabel>Lock up reward boost:</StyledLabel>
+            <StyledLabelValue>{boost.toFixed(2)}</StyledLabelValue>
+          </div>
+          <div>
+            <StyledLabel>Lock stake till:</StyledLabel>
+            <StyledLabelValue>{durationDate?.toDateString()}</StyledLabelValue>
+          </div>
+        </SpaceBetweenRow>
         <StyledCenter>
-          <SpaceBetweenRow>
-            <div>
-              <StyledLabel>Lock up boost:</StyledLabel>
-              <StyledLabelValue>{boost.toFixed(2)}</StyledLabelValue>
-            </div>
-            <div>
-              <StyledLabel>Lock till:</StyledLabel>
-              <StyledLabelValue>{durationDate?.toDateString()}</StyledLabelValue>
-            </div>
-          </SpaceBetweenRow>
           <DatePicker selected={durationDate} onChange={date => {
             if (date && date !== durationDate) {
               setDurationDate(date as Date)
