@@ -6,11 +6,11 @@ export const yycrvUniLp = '0xb93Cc05334093c6B3b8Bfd29933bb8d5C031caBC'
 export const migrator = '0x72cfed9293cbfb2bfc7515c413048c697c6c811c'
 
 // harcode chainId for wallet provider lib
-export const chainId = 1
+export const chainId = 4
 
 
 // mainnet
-export const strn = '0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f'
+//export const strn = '0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f'
 export const strnEthLP = '0xa198f36e3648dd16e75d721f0c6516e00e9ca053'
 export const strnIncentivizer = '0x19Bf9bef453f57983319Eb3033a95a7aa7DB764d'
 // make sure to update the addresses in json files
@@ -32,3 +32,8 @@ export const strnIncentivizer = '0x25d766A7e469741BE43C1dAD8439AF74a8344613'
 export const strnXiotLP = '0x42b230455c2bcaf3e4a02a5aa34e810b1dc56fba'
 export const strnXiotIncentivizer = '0xF70dE70202F326EA79f85C90e635F0abE338d73d'
 */
+
+// single staking
+export const stxp = '0x14F1f035Da6EA7Fb2Af3bCbB08690b8F3E0CE98c'
+export const singleStrnPool = '0xE0713105ea92fCdB607f85e574394dFCEE71Db0F'
+export const strn = '0x9b0E1A31E8fA5E694CB607508B0cc546E0ACf8ea'

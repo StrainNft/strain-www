@@ -35,7 +35,8 @@ const WalletModal: React.FC<ModalProps> = ({
     strnTokenBalance,
     strnXiotLpBalance,
     strnEthLpPoolBalance,
-    strnXiotLpPoolBalance
+    strnXiotLpPoolBalance,
+    stxpTokenBalance,
   } = useBalances()
 
   const {
@@ -102,12 +103,18 @@ const WalletModal: React.FC<ModalProps> = ({
       <ModalTitle text="My Wallet" />
       <ModalContent>
         <Split>
-          <Box row>
+          <Box column>
             <FancyValue
               icon="🧬"
               label="STRN balance"
               value={getDisplayBalance(strnTokenBalance)}
             />
+            <Spacer />
+            <FancyValue
+              icon="🍯"
+              label="STXP balance"
+              value={getDisplayBalance(stxpTokenBalance)}
+              />
           </Box>
           <Box column>
             <FancyValue
@@ -127,10 +134,16 @@ const WalletModal: React.FC<ModalProps> = ({
         <Separator />
         <Spacer />
         <Split>
-          <Box row>
+          <Box column>
             <FancyValue
               icon="🧬"
               label="Claimable STRN"
+              value={formattedEarnedBalance}
+            />
+            <Spacer />            
+            <FancyValue
+              icon="🍯"
+              label="Claimable STXP"
               value={formattedEarnedBalance}
             />
           </Box>

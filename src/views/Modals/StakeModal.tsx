@@ -11,38 +11,29 @@ import {
 } from 'react-neu'
 
 import TokenInput from 'components/TokenInput'
-import useBalances from 'hooks/useBalances'
-import { getFullDisplayBalance } from 'utils'
 
 interface StakeModalProps extends ModalProps {
   onStake: (amount: string) => void,
-  lpLabel: string,
-  poolId: string
+  label: string,
+  fullBalance?: BigNumber
 }
 
 const StakeModal: React.FC<StakeModalProps> = ({
   isOpen,
   onDismiss,
   onStake,
-  lpLabel,
-  poolId
+  label,
+  fullBalance
 }) => {
 
   const [val, setVal] = useState('')
-  const { strnEthLpBalance, strnXiotLpBalance } = useBalances()
-
-  const fullBalance = useMemo(() => {
-    // need better way to get specific pool balance
-    const balance = poolId === "0" ? strnEthLpBalance : strnXiotLpBalance
-    return balance || new BigNumber(0)
-  }, [strnEthLpBalance])
 
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)
   }, [setVal])
 
   const handleSelectMax = useCallback(() => {
-    setVal(String(fullBalance))
+    setVal(String(fullBalance || 0))
   }, [fullBalance, setVal])
 
   const handleStakeClick = useCallback(() => {
@@ -57,8 +48,8 @@ const StakeModal: React.FC<StakeModalProps> = ({
           value={val}
           onSelectMax={handleSelectMax}
           onChange={handleChange}
-          max={String(fullBalance)}
-          symbol={`${lpLabel} UNI-V2 LP`}
+          max={String(fullBalance || 0)}
+          symbol={label}
         />
       </ModalContent>
       <ModalActions>

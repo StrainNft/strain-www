@@ -14,54 +14,43 @@ import { useWallet } from 'use-wallet'
 
 import Label from 'components/Label'
 import Value from 'components/Value'
-
-import useFarming from 'hooks/useFarming'
-
-import StakeModal from 'views/Modals/StakeModal'
+import numeral from 'numeral'
+import DurationStakeModal from 'views/Modals/DurationStakeModal'
 import UnstakeModal from 'views/Modals/UnstakeModal'
 import styled from 'styled-components'
 import useApproval from 'hooks/useApproval'
 import useBalances from 'hooks/useBalances'
 import SplitRow from 'components/SplitRow'
 import { StyledSubtitle } from 'components/PageHeader/PageHeader'
-import { getItemValue } from 'utils'
+import { PoolIds } from 'constants/poolValues'
+import useStaking from 'hooks/useStaking'
+import BigNumber from 'bignumber.js'
 
-const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpImage?: string }> = ({ poolId, lpEmoji, lpImage, lpLabel }) => {
+const SingleStake: React.FC = () => {
   const [stakeModalIsOpen, setStakeModalIsOpen] = useState(false)
   const [unstakeModalIsOpen, setUnstakeModalIsOpen] = useState(false)
+
   const { status } = useWallet()
   const {
-    getPoolLPAddress,
+    strnTokenAddress,
     setConfirmTxModalIsOpen,
     isStaking,
     isUnstaking,
     onStake,
     onUnstake,
     getIncentivizerAddress,
-  } = useFarming()
+    totalStaked,
+    endTime
+  } = useStaking()
 
   const {
-    strnEthLpBalance,
-    strnXiotLpBalance,
-    strnEthLpPoolBalance,
-    strnXiotLpPoolBalance
-  } = useBalances()
+    strnTokenBalance,
+     } = useBalances()
 
-  // need better way to get pool specific data
-  const sigDigits = poolId === "0" ? 2 : 8;
-  const poolBalance = useMemo(() => {
-    // need better way to get specific pool balance
-    return poolId === "0" ? strnEthLpPoolBalance : strnXiotLpPoolBalance
-  }, [strnEthLpPoolBalance, strnXiotLpPoolBalance])
-
-  const walletBalance = useMemo(() => {
-    // need better way to get specific pool balance
-    return poolId === "0" ? strnEthLpBalance : strnXiotLpBalance
-  }, [strnEthLpBalance, strnXiotLpBalance])
 
   const { isApproved, isApproving, onApprove } = useApproval(
-    getPoolLPAddress(poolId),
-    getIncentivizerAddress(poolId),
+    strnTokenAddress,
+    getIncentivizerAddress(),
     () => setConfirmTxModalIsOpen(false)
   )
 
@@ -83,12 +72,14 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   }, [setUnstakeModalIsOpen])
 
   const handleOnStake = useCallback((amount: string) => {
-    onStake(poolId, amount)
+    // TODO: add date picker
+    const duration = "0"
+    onStake(duration, amount)
     handleDismissStakeModal()
   }, [handleDismissStakeModal, onStake])
 
   const handleOnUnstake = useCallback((amount: string) => {
-    onUnstake(poolId, amount)
+    onUnstake(amount)
     handleDismissUnstakeModal()
   }, [
     handleDismissUnstakeModal,
@@ -114,7 +105,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         />
       )
     }
-    if (getItemValue(isStaking, poolId)) {
+    if (isStaking) {
       return (
         <Button
           disabled
@@ -154,8 +145,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   ])
 
   const UnstakeButton = useMemo(() => {
-    const hasStaked = poolBalance && poolBalance.toNumber() > 0
-    if (status !== 'connected' || !hasStaked) {
+    if (status !== 'connected' || (totalStaked && totalStaked?.gt(0))) {
       return (
         <Button
           disabled
@@ -165,7 +155,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
         />
       )
     }
-    if (getItemValue(isUnstaking, poolId)) {
+    if (isUnstaking) {
       return (
         <Button
           disabled
@@ -192,34 +182,37 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   ])
 
   const formattedStakedBalance = useMemo(() => {
-    if (poolBalance) {
-      return poolBalance.gt(0) ? poolBalance.toFixed(sigDigits) : "0.00"
+    if (totalStaked) {
+      return totalStaked.gt(0) ? totalStaked.toFixed(2) : "0.00"
     } else {
       return '--'
     }
-  }, [poolBalance])
+  }, [totalStaked])
 
   const formattedWalletBalance = useMemo(() => {
-    if (walletBalance) {
-      return walletBalance.gt(0) ? walletBalance.toFixed(sigDigits) : "0.00"
+    if (strnTokenBalance) {
+      return strnTokenBalance.gt(0) ? strnTokenBalance.toFixed(2) : "0.00"
     } else {
       return '--'
     }
-  }, [walletBalance])
+  }, [strnTokenBalance])
 
-  const StyledImage = styled.img`
-    display: block;
-    width: '50px';
-`;
-
+  const getDisplayBalance = useCallback((value?: BigNumber) => {
+    if (value) {
+      return numeral(value).format('0.00a')
+    } else {
+      return '--'
+    }
+  }, [])
+  
   return (
     <>
       <Card>
         <Container size="sm">
           <Spacer />
-          <StyledSubtitle>{`${lpLabel} LP `}</StyledSubtitle>
+          <StyledSubtitle>Stake STRN</StyledSubtitle>
         </Container>
-        <CardIcon>{lpEmoji ? lpEmoji : <StyledImage src={require(`../../../../assets/${lpImage}`)} />}</CardIcon>
+        <CardIcon>🧬</CardIcon>
         <CardContent>
           <Box
             alignItems="center"
@@ -227,11 +220,11 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
           >
             <SplitRow>
               <>
-                <Value value={formattedStakedBalance} />
+                <Value value={getDisplayBalance(totalStaked)} />
                 <Label text={`Staked`} />
               </>
               <>
-                <Value value={formattedWalletBalance} />
+                <Value value={getDisplayBalance(strnTokenBalance)} />
                 <Label text={`Wallet`} />
               </>
             </SplitRow>
@@ -242,22 +235,23 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
           {StakeButton}
         </CardActions>
       </Card>
-      <StakeModal
+      <DurationStakeModal
         isOpen={stakeModalIsOpen}
         onDismiss={handleDismissStakeModal}
         onStake={handleOnStake}
-        label={`${lpLabel} UNI-V2 LP`}
-        fullBalance={poolBalance}
+        label={'STRN'}
+        fullBalance={strnTokenBalance}
+        maxTimestamp={endTime}
       />
       <UnstakeModal
         isOpen={unstakeModalIsOpen}
         onDismiss={handleDismissUnstakeModal}
         onUnstake={handleOnUnstake}
-        lpLabel={`${lpLabel} UNI-V2 LP`}
-        poolId={poolId}
+        lpLabel={'STRN'}
+        poolId={PoolIds.STRN_SINGLE}
       />
     </>
   )
 }
 
-export default Stake
+export default SingleStake
