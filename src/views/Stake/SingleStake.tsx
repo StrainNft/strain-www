@@ -71,9 +71,7 @@ const SingleStake: React.FC = () => {
     setUnstakeModalIsOpen(false)
   }, [setUnstakeModalIsOpen])
 
-  const handleOnStake = useCallback((amount: string) => {
-    // TODO: add date picker
-    const duration = "0"
+  const handleOnStake = useCallback((duration: string, amount: string) => {
     onStake(duration, amount)
     handleDismissStakeModal()
   }, [handleDismissStakeModal, onStake])

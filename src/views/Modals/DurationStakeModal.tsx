@@ -19,7 +19,7 @@ import { useMedia } from 'react-use'
 require('react-datepicker/dist/react-datepicker.css')
 
 interface StakeModalProps extends ModalProps {
-  onStake: (amount: string) => void,
+  onStake: (duration: string, amount: string) => void,
   label: string,
   fullBalance?: BigNumber
   maxTimestamp?: BigNumber
@@ -35,9 +35,10 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
 }) => {
   const secondsInDay = 86400;
   const maxDuration = 180 * secondsInDay;
+  const minInterval = 15 * 60;
 
   const [val, setVal] = useState('')
-  const [duration, setDuration] = useState(0)
+  const [duration, setDuration] = useState(minInterval)
   const [durationDate, setDurationDate] = useState<Date | null>(new Date())
   const [boost, setBoost] = useState<number>(0)
   const [maxDate, setMaxDate] = useState<Date | null>()
@@ -51,12 +52,16 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
 
   useEffect(() => {
     if (durationDate) {
-      const dur = durationDate.getTime() - new Date().getTime();
+      let maxTime = Math.floor(durationDate.getTime() / 1000)
+      if (maxTimestamp && maxTime > maxTimestamp?.toNumber()) {
+        maxTime = maxTimestamp.toNumber()
+      }
+      const dur = Math.floor(maxTime - (new Date().getTime() / 1000))
       // 1 + (3.2 * <duration> / 180)
-      const calcBoost = 1 + (3.2 * (dur / 1000) / maxDuration)
+      const calcBoost = 1 + (3.2 * dur / maxDuration)
 
       setBoost(calcBoost)
-      setDuration(dur)
+      if (dur > 0) setDuration(dur)
     }
   }, [durationDate])
 
@@ -69,7 +74,7 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
   }, [fullBalance, setVal])
 
   const handleStakeClick = useCallback(() => {
-    onStake(val)
+    onStake(String(duration), val)
   }, [onStake, val])
 
   const StyledCenter = styled.div`
@@ -105,7 +110,6 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
             </div>
           </SpaceBetweenRow>
           <DatePicker selected={durationDate} onChange={date => {
-            console.log('date picked', date)
             if (date && date !== durationDate) {
               setDurationDate(date as Date)
             }
