@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import { SingleStake } from 'constants/poolValues';
 
 export interface ContextValues {
   setConfirmTxModalIsOpen: (isOpen: boolean) => void,
@@ -16,4 +17,5 @@ export interface ContextValues {
   strnTokenAddress: string,
   endTime?: BigNumber,
   withdrawStakeAmount?: BigNumber
+  nextExpiringStake?: SingleStake
 }

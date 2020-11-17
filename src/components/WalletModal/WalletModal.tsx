@@ -163,12 +163,6 @@ const WalletModal: React.FC<ModalProps> = ({
               label="Claimable STRN"
               value={formattedEarnedBalance}
             />
-            <Spacer />
-            <FancyValue
-              icon="🍯"
-              label="Claimable STXP"
-              value={formattedStxpPoolBalance}
-            />
           </Box>
           <Box column>
             <FancyValue
@@ -182,16 +176,27 @@ const WalletModal: React.FC<ModalProps> = ({
               label="Staked STRN/XIOT Tokens"
               value={formattedStrnXiotPoolBalance}
             />
-            <Spacer />
+          </Box>
+        </Split>
+        <Spacer />
+        <Separator />
+        <Spacer />
+        <Split>
+          <Box column>
+            <FancyValue
+              icon="🍯"
+              label="Claimable STXP"
+              value={formattedStxpPoolBalance}
+            />
+          </Box>
+          <Box column>
             <FancyValue
               icon="🧬"
               label="Staked STRN Tokens"
               value={formattedTotalStakedStrnBalance}
             />
-
           </Box>
         </Split>
-        <Spacer />
       </ModalContent>
       <Separator />
       <ModalActions>

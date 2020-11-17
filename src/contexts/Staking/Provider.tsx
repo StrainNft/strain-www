@@ -11,13 +11,14 @@ import {
 import useYam from 'hooks/useYam'
 
 import {
+  getExitableAmount,
   getSingleEarned,
   getSingleStakeBalances,
   getSingleStakingEndTime,
+  singleExit,
   stake,
   stxpSingleHarvest,
   stxpSingleRedeem,
-  unstake,
 } from 'yam-sdk/utils'
 
 import Context from './Context'
@@ -34,23 +35,32 @@ const Provider: React.FC = ({ children }) => {
   const [userStakes, setUserStakes] = useState<SingleStake[]>([])
   const [withdrawStakeAmount, setWithdrawStakeAmount] = useState<BigNumber>()
   const [endTime, setEndTime] = useState<BigNumber>()
+  const [nextExpiringStake, setNextExpiringStake] = useState<SingleStake>()
 
   const yam = useYam()
   const { account } = useWallet()
-  
+
   const getIncentivizerAddress = () => {
     return strnStxnPoolAddress
   }
 
   const fetchStakedBalance = useCallback(async () => {
     if (!account || !yam) return
-    const balances: SingleStake[] = await getSingleStakeBalances(yam.contracts.stxpInc_pool, account)
+    const exitableAmount = await getExitableAmount(yam.contracts.stxpInc_pool, account);
+    setWithdrawStakeAmount(new BigNumber(String(exitableAmount)).dividedBy(new BigNumber(10).pow(18)))
+
+    const stakes: SingleStake[] = await getSingleStakeBalances(yam.contracts.stxpInc_pool, account)
     // sum up balances and save in total balance
-    const totalStaked = balances.reduce((p, s) => p.plus(s.amount), new BigNumber(0))
+    const totalStaked = stakes.reduce((p, s) => p.plus(s.amount), new BigNumber(0))
     setTotakStaked(totalStaked)
-    setUserStakes(balances)
-    // TODO: get total withdrawable stake
-    setWithdrawStakeAmount(new BigNumber(100))
+    setUserStakes(stakes)
+
+    if (stakes && stakes.length > 0) {
+      const current = (new Date().getTime() / 1000);
+      const nextExpiringStake = stakes.filter(s => s.lockDate > current)
+        .sort((a, b) => Number(a.lockDate) > Number(b.lockDate) ? 1 : -1)
+      if (nextExpiringStake && nextExpiringStake.length > 0) setNextExpiringStake(nextExpiringStake[0])
+    }
   }, [
     account,
     setTotakStaked,
@@ -61,7 +71,7 @@ const Provider: React.FC = ({ children }) => {
   const fetchEarnedBalance = useCallback(async () => {
     if (!account || !yam) return
     const balance = await getSingleEarned(yam, yam.contracts.stxpInc_pool, account)
-    setEarnedStxpPoolBalance(balance)    
+    setEarnedStxpPoolBalance(balance)
   }, [
     account,
     setEarnedStxpPoolBalance,
@@ -134,11 +144,11 @@ const Provider: React.FC = ({ children }) => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
     setIsUnstaking(true)
-    await unstake(yam.contracts.stxpInc_pool, yam.web3.eth, amount, account, () => {
+    await singleExit(yam.contracts.stxpInc_pool, yam.web3.eth, amount, account, () => {
       setConfirmTxModalIsOpen(false)
     }).catch(e => {
       console.error(e)
-      setIsUnstaking(false)  
+      setIsUnstaking(false)
     })
     setIsUnstaking(false)
   }, [
@@ -174,6 +184,7 @@ const Provider: React.FC = ({ children }) => {
       strnTokenAddress,
       endTime,
       withdrawStakeAmount,
+      nextExpiringStake,
     }}>
       {children}
       <ConfirmTransactionModal isOpen={confirmTxModalIsOpen} />

@@ -123,6 +123,25 @@ export const redeem = async (poolContract, provider, poolId, account, onTxHash) 
   }
 };
 
+export const singleExit = async (poolContract, provider, amount, account, onTxHash) => {
+  return poolContract.methods
+    .exit(String(new BigNumber(amount).times(new BigNumber(10).pow(18))))
+    .send({ from: account, gas: 400000 }, async (error, txHash) => {
+      if (error) {
+        onTxHash && onTxHash("");
+        console.log("Redeem error", error);
+        return false;
+      }
+      onTxHash && onTxHash(txHash);
+      const status = await waitTransaction(provider, txHash);
+      if (!status) {
+        console.log("Redeem transaction failed.");
+        return false;
+      }
+      return true;
+    });
+};
+
 export const approve = async (tokenContract, poolContract, account) => {
   return tokenContract.methods
     .approve(poolContract.options.address, ethers.constants.MaxUint256)
@@ -141,20 +160,29 @@ export const getPoolContracts = async (yam) => {
 };
 
 export const getSingleStakeBalances = async (pool, account) => {
-  //return await pool.methods.stakes(account).call()
-  return [
-    {
-      amount: new BigNumber('10000000000000000000'),
-      lockDate: 1605585551,
-      shares: new BigNumber('1000')
-    }
-  ]
+  let stakes = [];
+  try {
+    stakes = await pool.methods.getStakes(account).call();
+  } catch (e) {
+    console.error("can not get user stakes", e);
+  }
+  return stakes;
+};
+
+export const getExitableAmount = async (pool, account) => {
+  let amount = new BigNumber(0);
+  try {
+    amount = await pool.methods.exitableAmount(account).call();
+  } catch (e) {
+    console.error("can not get exitable amount", e);
+  }
+  return amount;
 };
 
 export const getSingleStakingEndTime = async (yam, pool) => {
-  const endTime = await pool.methods.endTime().call()
-  return yam.toBigN(endTime || 0)
-}
+  const endTime = await pool.methods.endTime().call();
+  return yam.toBigN(endTime || 0);
+};
 
 export const stxpSingleRedeem = async (poolContract, provider, amount, account, onTxHash) => {
   return poolContract.methods.exit(String(amount)).send({ from: account, gas: 400000 }, async (error, txHash) => {

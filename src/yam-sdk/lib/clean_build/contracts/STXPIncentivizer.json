@@ -137,6 +137,42 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "getStakes",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lockDate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Staking.Stake[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "lastRewardRecalcTimestamp",
       "outputs": [
@@ -244,6 +280,40 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "stakes",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lockDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "shares",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "strnToken",
       "outputs": [
@@ -306,7 +376,7 @@
     "1": {
       "transactionHash": "0xaa339470152ce1acfc5982696e20465c5d692f04e3a9913335a14b5e0f5d0109",
       "links": [[{}]],
-      "address": "0xE0713105ea92fCdB607f85e574394dFCEE71Db0F"
+      "address": "0xCE8A1F067f636c4Fc2081E017aB6cE25182f5b26"
     }
   }
 }

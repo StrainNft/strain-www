@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
   Box,
@@ -22,13 +22,15 @@ import useApproval from 'hooks/useApproval'
 import useBalances from 'hooks/useBalances'
 import SplitRow from 'components/SplitRow'
 import { StyledSubtitle } from 'components/PageHeader/PageHeader'
-import { PoolIds } from 'constants/poolValues'
 import useStaking from 'hooks/useStaking'
 import BigNumber from 'bignumber.js'
+import { bnToDec } from 'utils'
+import { getDaysRemaining, getHoursMinusDaysRemaining, getMinutesMinusHoursRemaining, getSecondsMinusMinutesRemaining, useTimer } from 'hooks/useTimer'
 
 const SingleStake: React.FC = () => {
   const [stakeModalIsOpen, setStakeModalIsOpen] = useState(false)
   const [unstakeModalIsOpen, setUnstakeModalIsOpen] = useState(false)
+  const [unlockTimer, setUnlockTimer] = useState<string>()
 
   const { status } = useWallet()
   const {
@@ -42,12 +44,14 @@ const SingleStake: React.FC = () => {
     totalStaked,
     endTime,
     withdrawStakeAmount,
+    nextExpiringStake
   } = useStaking()
 
   const {
     strnTokenBalance,
   } = useBalances()
 
+  const currentTime = useTimer()
 
   const { isApproved, isApproving, onApprove } = useApproval(
     strnTokenAddress,
@@ -63,6 +67,24 @@ const SingleStake: React.FC = () => {
     setConfirmTxModalIsOpen,
   ])
 
+  useEffect(() => {
+    if (nextExpiringStake && nextExpiringStake.lockDate && currentTime) {
+      const daysRemaining = getDaysRemaining(nextExpiringStake.lockDate, currentTime);
+      const hoursRemaining = getHoursMinusDaysRemaining(
+        nextExpiringStake.lockDate,
+        currentTime
+      );
+      const minutesRemaining = getMinutesMinusHoursRemaining(
+        nextExpiringStake.lockDate,
+        currentTime
+      );
+      const secondsRemaining = getSecondsMinusMinutesRemaining(
+        nextExpiringStake.lockDate,
+        currentTime
+      );
+      setUnlockTimer(`${daysRemaining}d ${hoursRemaining}h ${minutesRemaining}m ${secondsRemaining}s`)
+    }
+  }, [nextExpiringStake, currentTime])
 
   const handleDismissStakeModal = useCallback(() => {
     setStakeModalIsOpen(false)
@@ -144,7 +166,7 @@ const SingleStake: React.FC = () => {
   ])
 
   const UnstakeButton = useMemo(() => {
-    if (status !== 'connected' || (totalStaked && totalStaked?.gt(0))) {
+    if (status !== 'connected' || (withdrawStakeAmount && withdrawStakeAmount.eq(0))) {
       return (
         <Button
           disabled
@@ -178,27 +200,20 @@ const SingleStake: React.FC = () => {
     isUnstaking,
     handleApprove,
     status,
+    withdrawStakeAmount
   ])
-
-  const formattedStakedBalance = useMemo(() => {
-    if (totalStaked) {
-      return totalStaked.gt(0) ? totalStaked.toFixed(2) : "0.00"
-    } else {
-      return '--'
-    }
-  }, [totalStaked])
-
-  const formattedWalletBalance = useMemo(() => {
-    if (strnTokenBalance) {
-      return strnTokenBalance.gt(0) ? strnTokenBalance.toFixed(2) : "0.00"
-    } else {
-      return '--'
-    }
-  }, [strnTokenBalance])
 
   const getDisplayBalance = useCallback((value?: BigNumber) => {
     if (value) {
       return numeral(value).format('0.00a')
+    } else {
+      return '--'
+    }
+  }, [])
+
+  const getDisplayTotalBalance = useCallback((value?: BigNumber) => {
+    if (value) {
+      return numeral(bnToDec(value)).format('0.00a')
     } else {
       return '--'
     }
@@ -219,7 +234,7 @@ const SingleStake: React.FC = () => {
           >
             <SplitRow>
               <>
-                <Value value={getDisplayBalance(totalStaked)} />
+                <Value value={getDisplayTotalBalance(totalStaked)} />
                 <Label text={`Staked`} />
               </>
               <>
@@ -227,6 +242,23 @@ const SingleStake: React.FC = () => {
                 <Label text={`Wallet`} />
               </>
             </SplitRow>
+          </Box>
+          <Box
+            alignItems="center"
+            row
+          >
+            <SplitRow>
+              <>
+                <Value value={unlockTimer ? unlockTimer : '--'} />
+                <Label text={`next stake unlock`} />
+              </>
+            </SplitRow>
+          </Box>
+          <Box>
+            <>
+              <Value value={getDisplayBalance(withdrawStakeAmount)} />
+              <Label text={`unstakeable`} />
+            </>
           </Box>
         </CardContent>
         <CardActions>

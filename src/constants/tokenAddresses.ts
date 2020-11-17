@@ -34,6 +34,7 @@ export const strnXiotIncentivizer = '0xF70dE70202F326EA79f85C90e635F0abE338d73d'
 */
 
 // single staking
-export const stxp = '0x14F1f035Da6EA7Fb2Af3bCbB08690b8F3E0CE98c'
-export const singleStrnPool = '0xE0713105ea92fCdB607f85e574394dFCEE71Db0F'
+export const stxp = '0x3edd4De183b1DCa836FaA4e98D0A32c5a79eC9F6'
+// src/yam-sdk/lib/clean_build/contracts/STXPIncentivizer.json
+export const singleStrnPool = '0xCE8A1F067f636c4Fc2081E017aB6cE25182f5b26'
 export const strn = '0x9b0E1A31E8fA5E694CB607508B0cc546E0ACf8ea'
