@@ -83,6 +83,8 @@ const SingleStake: React.FC = () => {
         currentTime
       );
       setUnlockTimer(`${daysRemaining}d ${hoursRemaining}h ${minutesRemaining}m ${secondsRemaining}s`)
+    } else {
+      setUnlockTimer(undefined)
     }
   }, [nextExpiringStake, currentTime])
 

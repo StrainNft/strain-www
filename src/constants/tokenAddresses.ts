@@ -20,9 +20,9 @@ export const strnXiotLP = '0xae14831467c8d0e3153aba2ea009bcdc485125a2'
 export const strnXiotIncentivizer = '0x0B864C8eD32457C83d3E35b47200085E96005425'
 
 // -- single staking
-export const singleStrnPool = '0xCE8A1F067f636c4Fc2081E017aB6cE25182f5b26'
+export const singleStrnPool = '0xAa90C83f0031BeCC59032e711968614388fd8c0d'
 // src/yam-sdk/lib/clean_build/contracts/STXPIncentivizer.json
-export const stxp = '0x3edd4De183b1DCa836FaA4e98D0A32c5a79eC9F6'
+export const stxp = '0x545c7b81613e9ab6134c194e891c871818921647'
 
 /*
 // rinkeby

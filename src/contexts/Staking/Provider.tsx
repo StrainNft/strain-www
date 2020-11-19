@@ -50,7 +50,6 @@ const Provider: React.FC = ({ children }) => {
     setWithdrawStakeAmount(new BigNumber(String(exitableAmount)).dividedBy(new BigNumber(10).pow(18)))
 
     const stakes: SingleStake[] = await getSingleStakeBalances(yam.contracts.stxpInc_pool, account)
-    // sum up balances and save in total balance
     const totalStaked = stakes.reduce((p, s) => p.plus(s.amount), new BigNumber(0))
     setTotakStaked(totalStaked)
     setUserStakes(stakes)
@@ -59,7 +58,12 @@ const Provider: React.FC = ({ children }) => {
       const current = (new Date().getTime() / 1000);
       const nextExpiringStake = stakes.filter(s => s.lockDate > current)
         .sort((a, b) => Number(a.lockDate) > Number(b.lockDate) ? 1 : -1)
-      if (nextExpiringStake && nextExpiringStake.length > 0) setNextExpiringStake(nextExpiringStake[0])
+      if (nextExpiringStake && nextExpiringStake.length > 0) {
+        setNextExpiringStake(nextExpiringStake[0])
+      }
+      else {
+        setNextExpiringStake(undefined)
+      }
     }
   }, [
     account,
