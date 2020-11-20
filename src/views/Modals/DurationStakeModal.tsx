@@ -35,7 +35,7 @@ const DurationStakeModal: React.FC<StakeModalProps> = ({
 }) => {
   const secondsInDay = 86400;
   const maxDuration = 180 * secondsInDay;
-  const minInterval = 5 * 60;
+  const minInterval = 15 * 60;
 
   const [val, setVal] = useState('')
   const [duration, setDuration] = useState(minInterval)
