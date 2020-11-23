@@ -32,7 +32,7 @@ const HowItWorks = () => {
 };
 
 const StyledTitle = styled.h2`
-  color: #0CF5A5;
+  color: #00AC69;
   font-size: 36px;
   font-weight: 700;
   margin: 0;

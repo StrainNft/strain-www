@@ -65,7 +65,7 @@ const StyledHomePageContainer2 = styled.div`
 `;
 
 const StyledTitle = styled.h1`
-  color: #6C63FF;
+  color: #8E88FB;
   font-size: 36px;
   font-weight: 700;
   margin: 0;
@@ -89,12 +89,12 @@ const StyledStrnButton = styled.a`
     display: block;
     width: 100px;
     height: 40px;
-    border: solid 1px #6C63FF;
+    border: solid 1px #8E88FB;
     border-radius: 5px;
     text-align: center;
     line-height: 40px;
     text-decoration: none;
-    color: #6C63FF;
+    color: #8E88FB;
     background-color: Transparent;
     background-repeat:no-repeat;
     cursor:pointer;
