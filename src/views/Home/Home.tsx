@@ -14,6 +14,7 @@ import useVesting from 'hooks/useVesting'
 import twoStrains from '../../assets/two-strains.png'
 import plant from '../../assets/eth-flower.png'
 import strain from '../../assets/randomStrainNFT.png'
+import twoStrainsNew from '../../assets/two-strains-new.png'
 
 
 const Home: React.FC = () => {

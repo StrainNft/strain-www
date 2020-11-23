@@ -29,8 +29,8 @@ const HomePageHeader: React.FC<HomePageHeaderProps> = ({ imgSrc, subtitle, title
 const StyledHomePageHeader = styled.div`
   align-items: center;
   box-sizing: border-box;
-  max-width: 1200px;
   margin: 0 auto;
+  width: 80% !important;
 `;
 
 const StyledHomePageContainer = styled.div`
@@ -68,31 +68,30 @@ const StyledTitle = styled.h1`
   color: #8E88FB;
   font-size: 36px;
   font-weight: 700;
-  margin: 0;
+  margin: 15px 0;
   padding: 0;
   text-align: left;
   width: 65%;
 `;
 
 const StyledSubtitle = styled.h3`
-  color: ${props => props.theme.textColor};
-  font-size: 14px;
+  color: #FFFFFF ;
+  font-size: 16px;
   font-weight: 400;
-  margin: 0;
-  opacity: 0.66;
-  padding: 0;
+  margin: 0px 0;
+  padding: 10px 0;
   margin: auto;
   text-align: left;
 `;
 
 const StyledStrnButton = styled.a`
     display: block;
-    width: 100px;
-    height: 40px;
+    width: 140px;
+    height: 50px;
     border: solid 1px #8E88FB;
-    border-radius: 5px;
+    border-radius: 3px;
     text-align: center;
-    line-height: 40px;
+    line-height: 50px;
     text-decoration: none;
     color: #8E88FB;
     background-color: Transparent;
@@ -100,6 +99,11 @@ const StyledStrnButton = styled.a`
     cursor:pointer;
     margin-top: 15px;
     font-weight: bold;
+    
+    :hover {
+      background-color: #8E88FB;
+      color: #1C2129;
+    } 
 `;
 
 export default HomePageHeader
