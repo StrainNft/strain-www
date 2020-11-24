@@ -28,7 +28,6 @@ const Home: React.FC = () => {
         title="Fun, DeFi-staked NFT Collectibles"
         imgSrc2={strain}
       />
-      <HowItWorks></HowItWorks>
     </Page>
   )
 }

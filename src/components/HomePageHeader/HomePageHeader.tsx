@@ -65,13 +65,13 @@ const StyledHomePageContainer2 = styled.div`
 `;
 
 const StyledTitle = styled.h1`
-  color: #8E88FB;
-  font-size: 36px;
+  color: #61B5FD;
+  font-family: gopher, sans-serif;
   font-weight: 700;
   margin: 15px 0;
   padding: 0;
   text-align: left;
-  width: 65%;
+  width: 80%;
 `;
 
 const StyledSubtitle = styled.h3`
@@ -88,12 +88,12 @@ const StyledStrnButton = styled.a`
     display: block;
     width: 140px;
     height: 50px;
-    border: solid 1px #8E88FB;
+    border: solid 1px #00AC69;
     border-radius: 3px;
     text-align: center;
     line-height: 50px;
     text-decoration: none;
-    color: #8E88FB;
+    color: #00AC69;
     background-color: Transparent;
     background-repeat:no-repeat;
     cursor:pointer;
@@ -101,8 +101,8 @@ const StyledStrnButton = styled.a`
     font-weight: bold;
     
     :hover {
-      background-color: #8E88FB;
-      color: #1C2129;
+      background-color: #00AC69;
+      color: #08182E;
     } 
 `;
 
