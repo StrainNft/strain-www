@@ -260,4 +260,6 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
   )
 }
 
+
+
 export default Stake

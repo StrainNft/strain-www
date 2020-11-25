@@ -44,13 +44,21 @@ code {
 }
 
 h1 {
-  font-family: 'BigShouldersText-Light';
+  font-family: 'Gopher';
   letter-spacing: 3px;
-  font-size: 45px !important;
+  font-size: 32px !important;
 }
 
- h2, h3, h4 {
+ h2, h3,  {
   font-family: 'colored-crayons';
   letter-spacing: 3px;
+}
+h4 {
+  font-family: 'colored-crayons';
+  font-size: 14px;
+  color: #B2FAD6;
+  margin: 0;
+  padding: 0;
+
 }
 

@@ -18,6 +18,7 @@ const HomePageHeader: React.FC<HomePageHeaderProps> = ({ imgSrc, subtitle, title
                     <StyledTitle>{title}</StyledTitle>
                     <StyledSubtitle>{subtitle}</StyledSubtitle>
                     <StyledStrnButton href="https://uniswap.exchange/swap?inputCurrency=ETH&outputCurrency=0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f" target="_blank">Buy STRN</StyledStrnButton>
+                    <StyledStrnButton href="https://app.uniswap.org/#/add/0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f/ETH" target="_blank">Provide LP</StyledStrnButton>
                 </StyledHomePageContainer>
                 <StyledHomePageContainer2>
                     <img src={imgSrc2} height={384}/>
