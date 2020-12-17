@@ -25,6 +25,7 @@ const Home: React.FC = () => {
   const [timeRemaining, setTimeRemaining] = useState<string | undefined>(undefined)
   const endTime = 1608163117
   const currentTime = useTimer()
+  const showTimer = false
   
   useEffect(() => {
     if (endTime && currentTime) {
@@ -56,7 +57,7 @@ const Home: React.FC = () => {
         imgSrc2={strain}
       />
 
-      <StyledTime>{timeRemaining}</StyledTime>
+      {showTimer && <StyledTime>{timeRemaining}</StyledTime>}
     </Page>
   )
 }
