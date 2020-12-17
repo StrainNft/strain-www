@@ -180,6 +180,7 @@ const Stake: React.FC<{ poolId: string, lpEmoji?: string, lpLabel: string, lpIma
     return (
       <Button
         full
+        disabled
         onClick={handleUnstakeClick}
         text="Unstake"
         variant="secondary"
