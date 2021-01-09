@@ -1,51 +1,163 @@
-<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="For the Strain NFT community."
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-      http://strainnft.com/images/two-strains.png
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.typekit.net/ysf2nbz.css">
-    <meta name="twitter:image" content="http://strainnft.com/images/two-strains.png" />
-    <meta name="twitter:description" content="For the Strain NFT community." />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Strain NFT." />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strain NFT</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-body" style="background: linear-gradient(180deg, #08182E 7.13%, #123160 102.31%);">
+    
+    <div class="max-w-screen-lg mx-auto py-4 px-4 sm:px-0"><!-- content wrap -->
+        <div><!-- nav -->
+            <nav class="flex flex-col sm:flex-row justify-between items-center text-xs font-gorda uppercase text-clara pt-4">
+                <div class="flex-none pb-8 sm:pb-0">
+                    <h1>
+                        <a href="/"><img class="h-16" src="images/StrainNFT-Logo.png"></a>
+                    </h1>
+                </div>
+                <div class="w-auto sm:ml-auto">
+                    <ul class="flex flex-row gap-4 justify-end items-center">
+                        <li>
+                            <a href="#">
+                                <span class="hover:text-quaternary">Home</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="hover:text-quaternary">Pools</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="hover:text-quaternary">Stake</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="hover:text-quaternary">Apothecary</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="hover:text-quaternary">GreenHouse</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="order-2 sm:order-3 mt-8 sm:mt-0 pl-0 sm:pl-8">
+                    <a href="#" class="uppercase font-semi text-terceary text-xs text-center block rounded-lg bg-primary py-3 px-6 hover:bg-white">Unlock Wallet</a>
+                </div>
+            </nav>
+        </div><!--End nav-->
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+        <main>
+            <div class="sm:flex justify-between mt-16">
+                
+                <div class=""><!-- left -->
+                    <div class="flex justify-center"><!-- menu -->
+                        <div class="flex justify-between items-center">
+                            <div class="w-4"><a href="#"><img class="h-4" src="images/left_arrow.svg"></a></div>
+                            <div class="flex justify-center gap-2 w-auto ml-2 mr-2">
+                                <div><img class="shadow-md" src="images/1.png"></div>
+                                <div><img class="shadow-md" src="images/2.png"></div>
+                                <div><img class="shadow-md" src="images/3.png"></div>
+                            </div>
+                            <div class="w-4"><a href="#"><img class="h-4 ml-auto" src="images/right_arrow.svg"></a></div>
+                        </div>
+                    </div><!-- end menu -->
+                    
+                    <div class="flex py-4 sm:py-6">
+                        <div class="w-auto mx-auto"><img src="images/arrow2.svg"></div>
+                    </div>
+                    
+                    <div class="flex flex-col"><!-- card -->
+                        <div class="flex flex-col w-auto mx-auto p-5 rounded bg-primary shadow-lg">
+                            <div class="flex justify-between mb-4">
+                                <div class="flex flex-col items-start text-terceary">
+                                    <div class="text-xl font-preta leading-6">Murkemur</div>
+                                    <div class="text-xs font-semi uppercase">Ruderalis</div>
+                                </div>
+                                <div class="text-right"><span class="text-sm">#</span><span class="text-lg font-gorda">75</span></div>
+                            </div>
+                            <div class=""><img width="250" src="images/nft1.png"></div>
+                        </div>
+                        <div class="w-auto mx-auto rounded bg-quinte text-xs font-semi px-2 py-1 uppercase mt-4">supernova</div>
+                    </div>
+                </div>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+                <div class="self-end sm:mb-10"><!-- center -->
+                    <div class="flex flex-col">
+                        <div class="flex flex-col mb-8 mt-8 sm:mt-0">
+                            <div class="leading-4 pb-1 text-clara font-gorda">Burn STXP</div>
+                            <div class="leading-4 text-clara font-fina">Increase chance of rarity</div>
+                            <div class="w-full mt-4"><a href="#" class="block uppercase font-gorda text-xs rounded-md bg-secondary py-3 px-6 text-center hover:bg-white shadow-sm">Aprove STXP</a></div>
+                        </div>
+                        <div class="flex flex-col mb-5 sm:mb-12">
+                            <div class="leading-4 pb-1 text-clara font-gorda">STXP amount</div>
+                            <div><input class="w-full rounded bg-terceary text-brilho text-lg font-extrafina border-r border-b border-tercelight p-2 mt-2 mb-2"></div>
+                            <div class="text-right text-clara text-xs pr-1">USD 25,00</div>
+                        </div>
+                        <div>
+                            <div class="invisible sm:visible w-full"><a href="#" class="sm:block uppercase font-gorda text-xs rounded-lg bg-secondary py-3 px-6 py-6 text-center hover:bg-white shadow-md">BREED</a></div><!-- hidden on mobile version -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class=""><!-- right -->
+                    <div class="flex justify-center"><!-- menu -->
+                        <div class="flex justify-between items-center">
+                            <div class="w-4"><a href="#"><img class="h-4" src="images/left_arrow.svg"></a></div>
+                            <div class="flex justify-center gap-2 w-auto ml-2 mr-2">
+                                <div><img class="shadow-md" src="images/1.png"></div>
+                                <div><img class="shadow-md" src="images/2.png"></div>
+                                <div><img class="shadow-md" src="images/3.png"></div>
+                            </div>
+                            <div class="w-4"><a href="#"><img class="h-4 ml-auto" src="images/right_arrow.svg"></a></div>
+                        </div>
+                    </div><!-- end menu -->
+                    
+                    <div class="flex py-4 sm:py-6">
+                        <div class="w-auto mx-auto"><img src="images/arrow2.svg"></div>
+                    </div>
+                    
+                    <div class="flex flex-col"><!-- card -->
+                        <div class="flex flex-col w-auto mx-auto p-5 rounded bg-primary shadow-lg">
+                            <div class="flex justify-between mb-4">
+                                <div class="flex flex-col items-start text-terceary">
+                                    <div class="text-xl font-preta leading-6">Murkemur</div>
+                                    <div class="text-xs font-semi uppercase">Ruderalis</div>
+                                </div>
+                                <div class="text-right"><span class="text-sm">#</span><span class="text-lg font-gorda">75</span></div>
+                            </div>
+                            <div class=""><img width="250" src="images/nft1.png"></div>
+                        </div>
+                        <div class="w-auto mx-auto rounded bg-quinte text-xs font-semi px-2 py-1 uppercase mt-4">supernova</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div><!-- mobile btn hidden on desktop  -->
+                <div class="sm:invisible w-full mt-6"><a href="#" class="block uppercase font-gorda text-xs rounded-lg bg-green-500 py-3 px-6 py-6 text-center shadow-lg">BREED</a></div>
+            </div>
+        </main>
+        <footer class="py-8 lg:py-10">
+            <div class="">
+              <div class="flex justify-between items-center opacity-100">
+                <div>
+                  <p class="text-sm font-norm text-white">
+                    ©2020 Strain NFT. All rights reserved
+                  </p>
+                </div>
+                <div class="flex gap-4">
+                  <img class="h-4" src="images/twitter.svg" alt=""/>
+                  <img class="h-4" src="images/medium.svg" alt=""/>
+                  <img class="h-4" src="images/telegram.svg" alt=""/>
+                </div>
+              </div>
+            </div>
+          </footer>
+    </div>
+
+</body>
 </html>
