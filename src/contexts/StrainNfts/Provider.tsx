@@ -42,7 +42,7 @@ const Provider: React.FC = ({ children }) => {
     if (fetchNfts) {
       const startTime = new Date().getTime();
       setFetchNfts(false)
-      getUserNfts(provider, getAddresses().strainNFTAddress, userAddress, yam.contracts.strain_nft_crafter)
+      getUserNfts(provider, getAddresses().strainNFTAddress, userAddress, yam.contracts.strain_nft_crafter, yam.contracts.strain_nft_genetics)
         .then(nftinstances => {
           const fetchTime = new Date().getTime();
           console.log(`NFT fetching took ${(fetchTime - startTime) / 1000} seconds`)
@@ -65,8 +65,10 @@ const Provider: React.FC = ({ children }) => {
 
   const fetchEarnedBalance = useCallback(async (yam, account, nftcollection: NftInstance[]) => {
     if (!account || !yam) return
-    const nftids = nftcollection.map(nft => nft.nftId);
-    const balance = await getNftEarned(yam, yam.contracts.strain_nft_crafter, account, nftids)
+    if (!nftcollection || nftcollection.length === 0) return setEarnedStrnBalance(new BigNumber(0));
+    const nftIds = nftcollection.map(n => n.nftId);
+    const balance = await getNftEarned(yam, yam.contracts.strain_nft_crafter, account, nftIds);
+    console.log('nft earned balance', String(balance));
     setEarnedStrnBalance(balance)
   }, [
     account,
@@ -183,6 +185,10 @@ const Provider: React.FC = ({ children }) => {
     }
   }
 
+  const findNftById = (nftId: string): NftInstance | undefined => {
+    return nftcollection.find(n => n.nftId === nftId);
+  }
+
   return (
     <Context.Provider value={{
       setConfirmTxModalIsOpen,
@@ -199,6 +205,7 @@ const Provider: React.FC = ({ children }) => {
       isHarvesting,
       strnEthLpPoolBalance,
       strnXiotLpPoolBalance,
+      findNftById,
     }}>
       {children}
     </Context.Provider>

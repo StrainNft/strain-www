@@ -6,7 +6,7 @@ import { AbiItem } from 'web3-utils'
 
 import ERC20ABI from 'constants/abi/ERC20.json'
 import ERC1155 from 'constants/abi/ERC1155.json'
-import { NftInfo, NftInstance } from 'constants/poolValues'
+import { COOLING_OFF_IN_SECONDS, NftInfo, NftInstance } from 'constants/poolValues'
 import StrainNFTLPTokenWrapper from '../yam-sdk/lib/clean_build/contracts/StrainNFTLPTokenWrapper.json'
 import StrainNft from '../yam-sdk/lib/clean_build/contracts/StrainNFT.json'
 import {
@@ -14,7 +14,7 @@ import {
   ContractCallResults,
   ContractCallContext,
 } from 'ethereum-multicall';
-import { infura_key } from 'constants/tokenAddresses'
+import { Web3Provider, ExternalProvider } from '@ethersproject/providers'
 
 const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -137,8 +137,8 @@ export const getBalance = async (provider: provider, tokenAddress: string, userA
   }
 }
 
-const getUsersNftsMulticalResults = async (nftAddress: string, nftCount: number, userAddress: string): Promise<string[]> => {
-  let provider = new ethers.providers.StaticJsonRpcProvider(infura_key);
+const getUsersNftsMulticalResults = async (provider: Web3Provider, nftAddress: string, nftCount: number, userAddress: string): Promise<string[]> => {
+  //let provider = new ethers.providers.StaticJsonRpcProvider(infura_key);
   const multicall = new Multicall({ ethersProvider: provider });
   console.log('nft count:', nftCount)
   let items: number[] = [];
@@ -185,8 +185,8 @@ const getUsersNftsMulticalResults = async (nftAddress: string, nftCount: number,
 }
 
 
-const getNftDetailsMulticalResults = async (nftAddress: string, nftIds: string[]): Promise<NftInstance[]> => {
-  let provider = new ethers.providers.StaticJsonRpcProvider(infura_key);
+const getNftDetailsMulticalResults = async (provider: Web3Provider, nftAddress: string, nftIds: string[]): Promise<NftInstance[]> => {
+  //let provider = new ethers.providers.StaticJsonRpcProvider(infura_key);
   const multicall = new Multicall({ ethersProvider: provider });
   const nftDetails: { [key: string]: NftInstance } = nftIds.reduce((p, n) => ({ ...p, [n]: { nftId: n, dataUrl: '', nftName: '' } }), {});
 
@@ -235,12 +235,14 @@ const getNftDetailsMulticalResults = async (nftAddress: string, nftIds: string[]
   return Object.values(nftDetails)
 }
 
-export const getUserNfts = async (provider: provider, nftAddress: string, userAddress: string, crafterContract: any): Promise<NftInstance[]> => {
+export const getUserNfts = async (provider: provider, nftAddress: string, userAddress: string, crafterContract: any, geneticsContract: any): Promise<NftInstance[]> => {
   const nftContract = getERC1155Contract(provider, nftAddress)
   try {
     const length = await nftContract.methods.getItemIDsLength().call();
-    const usersNfts = await getUsersNftsMulticalResults(nftAddress, length, userAddress);
-    const nfts = await getNftDetailsMulticalResults(nftAddress, usersNfts)
+    // @ts-ignore
+    const p = new Web3Provider(window?.ethereum);
+    const usersNfts = await getUsersNftsMulticalResults(p, nftAddress, length, userAddress);
+    const nfts = await getNftDetailsMulticalResults(p, nftAddress, usersNfts)
 
     const userItems: NftInstance[] = []
 
@@ -249,12 +251,33 @@ export const getUserNfts = async (provider: provider, nftAddress: string, userAd
       const { poolId, lpBalance } = await getNftPoolIdBalance(provider, crafterContract, nft.nftId, userAddress);
       nft.lpBalance = lpBalance;
       nft.poolId = poolId
+
+      // add convenience property
+      const now = new Date().getTime() / 1000;
+      const timePassed = now - Number(nft.nftInfo ? nft.nftInfo.lastBreedTime : 0);
+      nft.canBreed = timePassed > COOLING_OFF_IN_SECONDS;
+
+      // TODO: verify genetics contract address then turn this on
+      //nft.breedFee = await getNftBreedingBurnFee(provider, geneticsContract, nft, userAddress);
+      nft.breedFee = "10000000000000000000";
+
       userItems.push(nft)
     }
+    // for debugging
+    console.log('users NFTs', userItems)
     return userItems
   } catch (e) {
     return []
   }
+}
+
+export const getNftBreedingBurnFee = async (provider: provider, contract: any, nft: NftInstance, userAddress: string) => {
+  let fee = "0"; // set default
+  fee = await contract.methods.getBurnerFee(nft.nftInfo?.gnome, nft.nftInfo?.breedCount, nft.nftInfo?.lastBreedTime).call().catch((e: Error) => {
+    console.error("Could not get NFT's pool Id, defaulting to `0`", e);
+  })
+
+  return fee;
 }
 
 export const getNftPoolIdBalance = async (provider: provider, contract: any, nftId: string, userAddress: string) => {
