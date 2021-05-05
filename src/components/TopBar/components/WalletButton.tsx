@@ -68,7 +68,7 @@ border-radius: 0px !important;
  button {
    background-color: #00AC69 !important;
    border-radius: 5px;
-   text-color: #1C2129 !important;;
+   color: #1C2129 !important;
  }
 `
 

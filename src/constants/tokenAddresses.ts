@@ -71,6 +71,9 @@ const addresses = {
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
     strainNFTGeneticsAdderss: "0xe11aB4fC365eb6305B6aDe0c3F50D16d03a54388",
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTGenetics.json
+
+    // Old Address to be filled bellow for the burning of NFTs from the old contract.
+    oldStrainNFTAddress: "0xfC83c90052FE546Ad1d9F78D4e62AE9a08327936",
   },
 };
 
