@@ -10,7 +10,7 @@ export const chainId = 1;
 export const base_image_url = "https://nft-image-service.herokuapp.com/";
 //export const infura_key = 'https://rinkeby.infura.io/v3/1b38871d05fa4d3298a3096c6e863c97';
 //export const infura_key =
-  //"https://rinkeby.infura.io/v3/b939aead2bdf44ad89eecac113a4e143";
+//"https://rinkeby.infura.io/v3/b939aead2bdf44ad89eecac113a4e143";
 
 // mainnet
 const strn = "0x90b426067be0b0ff5de257bc4dd6a4815ea03b5f";
@@ -71,9 +71,11 @@ const addresses = {
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
     strainNFTGeneticsAdderss: "0xe11aB4fC365eb6305B6aDe0c3F50D16d03a54388",
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTGenetics.json
+
+    // Address for the burning of NFTs from the old contract.
+    oldStrainNFTAddress: "0x0f24aFC9f3FCdf66132060fE1fA344711859C571",
   },
 };
-
 
 export function getAddresses(): { [name: string]: string } {
   return addresses[chainId];

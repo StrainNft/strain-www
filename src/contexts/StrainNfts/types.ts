@@ -17,4 +17,5 @@ export interface ContextValues {
   strnEthLpPoolBalance?: BigNumber,
   strnXiotLpPoolBalance?: BigNumber,
   findNftById: (nftId: string) => NftInstance | undefined,
+  oldStrainNftCollection: NftInstance[],
 }

@@ -17,7 +17,7 @@ import StyledPrimaryButton from "./StyledButton";
 import AdditionalStakeModal from "views/Modals/AdditionalStakeModal";
 import useBalances from "hooks/useBalances";
 
-const StyledNft = ({ nft, isDispensary = false}: { nft: NftInstance, isDispensary?: Boolean }) => {
+const StyledNft = ({ nft, isDispensary = false, isBurnOldNftsPage = false}: { nft: NftInstance, isDispensary?: Boolean, isBurnOldNftsPage?: Boolean }) => {
   const [isNftLoading, setIsNftLoading] = useState(false);
   const [updatedNft, setUpdatedNft] = useState<NftInstance>();
   const [canBurn, setCanBurn] = useState<boolean>(false);
@@ -181,7 +181,7 @@ const StyledNft = ({ nft, isDispensary = false}: { nft: NftInstance, isDispensar
                     {nft?.lpBalance ? formattedLPBalance : "-"}
                   </StyledValue>
                 </StyledLpLabel>
-                {isDispensary ? null : <StyledPrimaryButton
+                {isBurnOldNftsPage ? null : <StyledPrimaryButton
                   text={isAdding ? "..." : "+"}
                   onClick={handleAddStakeClick}
                   size={"sm"}

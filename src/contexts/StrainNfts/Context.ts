@@ -19,6 +19,7 @@ const Context = createContext<ContextValues>({
     strnEthLpPoolBalance: new BigNumber(0),
     strnXiotLpPoolBalance: new BigNumber(0),
     findNftById: (nftId) => undefined,
+    oldStrainNftCollection: [],
 })
 
 export default Context
