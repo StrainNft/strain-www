@@ -49,6 +49,11 @@ const addresses = {
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTCrafter.json
     strainNFTGeneticsAdderss: "0xd7579f0aB4d15FBF0B519E172936B228FBC9a942",
     // src/yam-sdk/lib/clean_build/contracts/StrainNFTGenetics.json
+
+    // Address for the burning of NFTs from the old contract.
+    oldStrainNFTAddress: "0x0f24aFC9f3FCdf66132060fE1fA344711859C571",
+
+    oldStrainNFTCrafterAddress: "0xCbb9fA9b7b3d70231B4aD1C6819D6251d612b116",
   },
   4: {
     strnTokenAddress: "0x49aF0fa41DdC96F502c67AcdC5064aABFf6b43da",
@@ -74,6 +79,8 @@ const addresses = {
 
     // Address for the burning of NFTs from the old contract.
     oldStrainNFTAddress: "0x0f24aFC9f3FCdf66132060fE1fA344711859C571",
+
+    oldStrainNFTCrafterAddress: "0xCbb9fA9b7b3d70231B4aD1C6819D6251d612b116",
   },
 };
 

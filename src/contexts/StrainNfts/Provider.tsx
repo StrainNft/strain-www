@@ -65,6 +65,10 @@ const Provider: React.FC = ({ children }) => {
   }, [yam, fetchNfts, txHash])
 
   const fetchOldUsersNfts = useCallback(async (yam: any, userAddress: string, provider: provider) => {
+
+    const oldStrainNFTAddress = getAddresses().oldStrainNFTAddress;
+    const oldCrafterAddress = getAddresses().oldStrainNFTCrafterAddress;
+
     if (account === undefined || yam === undefined) {
       console.log('account, yam', account !== undefined, yam !== undefined)
       return
@@ -75,7 +79,7 @@ const Provider: React.FC = ({ children }) => {
     if (fetchNfts) {
       const startTime = new Date().getTime();
       setFetchNfts(false)
-      getUserNfts(provider, getAddresses().oldStrainNFTAddress, userAddress, yam.contracts.strain_nft_crafter, yam.contracts.strain_nft_genetics)
+      getUserNfts(provider, oldStrainNFTAddress, userAddress, oldCrafterAddress, yam.contracts.strain_nft_genetics)
         .then(oldNftinstances => {
           const fetchTime = new Date().getTime();
           console.log(`NFT fetching took ${(fetchTime - startTime) / 1000} seconds`)
