@@ -58,6 +58,19 @@ export interface NftInstance {
   breedFee?: string;
 }
 
+export interface oldNftInstance {
+  nftId: string;
+  nftName?: string;
+  dataUrl?: string;
+  lpBalance?: BigNumber;
+  attribs?: AttribCollection;
+  poolId?: string;
+  isDestroying?: boolean;
+  nftInfo?: NftInfo;
+  canBreed?: boolean;
+  breedFee?: string;
+}
+
 export interface AttribCollection {
   name?: string;
   image?: string;

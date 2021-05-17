@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { NftInstance } from 'constants/poolValues';
+import { NftInstance, oldNftInstance } from 'constants/poolValues';
 
 export interface ContextValues {
   setConfirmTxModalIsOpen: (isOpen: boolean) => void,
@@ -17,5 +17,5 @@ export interface ContextValues {
   strnEthLpPoolBalance?: BigNumber,
   strnXiotLpPoolBalance?: BigNumber,
   findNftById: (nftId: string) => NftInstance | undefined,
-  oldStrainNftCollection: NftInstance[],
+  oldStrainNftCollection: oldNftInstance[],
 }
