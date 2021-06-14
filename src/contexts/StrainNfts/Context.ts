@@ -13,6 +13,7 @@ const Context = createContext<ContextValues>({
     onAddNftStake: () => { },
     onDestroyNft: () => { },
     onRetrieve: () => Promise.resolve({ nftId: '' }),
+    onRetrieveOld: () => Promise.resolve({ nftId: ''}),
     onHarvest: () => { },
     setConfirmTxModalIsOpen: () => { },
     earnedStrnBalance: new BigNumber(0),

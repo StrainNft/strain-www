@@ -11,6 +11,7 @@ export interface ContextValues {
   onCreateNft: (poolId: string, amount: string, name: string) => void,
   onDestroyNft: (poolId: string, nftId: NftInstance) => void,  
   onRetrieve: (nft: NftInstance) => Promise<NftInstance>,
+  onRetrieveOld: (nft: oldNftInstance) => Promise<oldNftInstance>,
   onAddNftStake: (poolId: string, nftId: string, amount: string, stxpAmount: string) => void,
   onHarvest: () => void,
   earnedStrnBalance?: BigNumber,

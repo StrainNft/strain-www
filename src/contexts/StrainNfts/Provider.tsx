@@ -83,7 +83,7 @@ const Provider: React.FC = ({ children }) => {
       getUserNfts(provider, oldStrainNFTAddress, userAddress, oldCrafterAddress, yam.contracts.strain_nft_genetics)
         .then(oldNftinstances => {
           const fetchTime = new Date().getTime();
-          console.log(`NFT fetching took ${(fetchTime - startTime) / 1000} seconds`)
+          console.log(`Old NFT fetching took ${(fetchTime - startTime) / 1000} seconds`)
           console.log('oldNftinstances', oldNftinstances)
           setOldNftCollection(oldNftinstances)
 
@@ -198,6 +198,13 @@ const Provider: React.FC = ({ children }) => {
     return promise.then(response => ({ ...nft, attribs: response.data }));
   }, [])
 
+  const handleOldNftRetrive = useCallback(async (nft: oldNftInstance): Promise<oldNftInstance> => {
+    if (!nft?.dataUrl) return nft;
+    Axios.get(nft.dataUrl)
+    const promise = Axios.get(nft.dataUrl)
+    return promise.then(response => ({ ...nft, attribs: response.data }));
+  }, [])
+
   const handleHarvest = useCallback(async () => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
@@ -236,6 +243,7 @@ const Provider: React.FC = ({ children }) => {
       strainNftCollection: nftcollection,
       onDestroyNft: handleDestroyNft,
       onRetrieve: handleNftRetrive,
+      onRetrieveOld: handleOldNftRetrive,
       onCreateNft: handleCreateNft,
       onHarvest: handleHarvest,
       onAddNftStake: handleAddNftStake,
