@@ -13,7 +13,7 @@ import { Spacer } from "react-neu";
 import numeral from "numeral";
 import styled from "styled-components";
 import { Tooltip } from "react-lightweight-tooltip";
-import AdditionalStakeModal from "views/Modals/AdditionalStakeModal";
+// import AdditionalStakeModal from "views/Modals/AdditionalStakeModal";
 import useBalances from "hooks/useBalances";
 import StyledPrimaryButton from "views/Common/StyledButton";
 

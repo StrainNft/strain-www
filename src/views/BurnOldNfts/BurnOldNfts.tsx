@@ -5,7 +5,7 @@ import { Container, Spacer } from "react-neu";
 import styled from "styled-components";
 import Page from "components/Page";
 import StyledNotice from "views/Common/StyledNotice";
-import StyledNft from "views/Common/StyledNft";
+import StyledOldNft from "./StyledOldNft
 import useStrainNfts from "hooks/useStrainNfts";
 import blankStrainNFT from "../../assets/shadyStrainNFT.png";
 import { DEFAULT_NFT_SIZE } from "constants/poolValues";
@@ -48,7 +48,7 @@ const BurnOldNfts: React.FC = () => {
           </>
         ) : (
           oldStrainNftCollection.map((nft) => (
-            <StyledNft key={nft.nftId} nft={nft} isBurnOldNftsPage={true} />
+            <StyledOldNft key={nft.nftId} nft={nft}/>
           ))
         )}
       </BurnOldNftsContainer>
