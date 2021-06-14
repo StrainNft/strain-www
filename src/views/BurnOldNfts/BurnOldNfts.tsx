@@ -5,7 +5,7 @@ import { Container, Spacer } from "react-neu";
 import styled from "styled-components";
 import Page from "components/Page";
 import StyledNotice from "views/Common/StyledNotice";
-import StyledOldNft from "./StyledOldNft
+import StyledOldNft from "./StyledOldNft"
 import useStrainNfts from "hooks/useStrainNfts";
 import blankStrainNFT from "../../assets/shadyStrainNFT.png";
 import { DEFAULT_NFT_SIZE } from "constants/poolValues";

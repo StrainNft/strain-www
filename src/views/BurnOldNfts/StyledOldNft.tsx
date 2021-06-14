@@ -21,9 +21,9 @@ const StyledNft = ({ nft }: { nft: oldNftInstance }) => {
   const [isNftLoading, setIsNftLoading] = useState(false);
   const [updatedNft, setUpdatedNft] = useState<oldNftInstance>();
   const [canBurn, setCanBurn] = useState<boolean>(false);
-  const [addStakeModalIsOpen, setAddStakeModalIsOpen] = useState<boolean>(
-    false
-  );
+  // const [addStakeModalIsOpen, setAddStakeModalIsOpen] = useState<boolean>(
+  //   false
+  // );
 
   const {
     onRetrieve,
@@ -83,22 +83,22 @@ const StyledNft = ({ nft }: { nft: oldNftInstance }) => {
     onDestroyNft(nft.poolId, nft);
   };
 
-  const handleAddStakeClick = useCallback(() => {
-    setAddStakeModalIsOpen(true);
-  }, [setAddStakeModalIsOpen]);
+  // const handleAddStakeClick = useCallback(() => {
+  //   setAddStakeModalIsOpen(true);
+  // }, [setAddStakeModalIsOpen]);
 
-  const handleDismissStakeModal = useCallback(() => {
-    setAddStakeModalIsOpen(false);
-  }, [setAddStakeModalIsOpen]);
+  // const handleDismissStakeModal = useCallback(() => {
+  //   setAddStakeModalIsOpen(false);
+  // }, [setAddStakeModalIsOpen]);
 
-  const handleOnAdditionalStake = useCallback(
-    (amount: string, stxpAmount: string) => {
-      const poolId = nft?.poolId || "0"; // assume pool 0, nft?.poolId should always be populated
-      onAddNftStake(poolId, nft.nftId, amount, stxpAmount);
-      handleDismissStakeModal();
-    },
-    [handleDismissStakeModal, onAddNftStake]
-  );
+  // const handleOnAdditionalStake = useCallback(
+  //   (amount: string, stxpAmount: string) => {
+  //     const poolId = nft?.poolId || "0"; // assume pool 0, nft?.poolId should always be populated
+  //     onAddNftStake(poolId, nft.nftId, amount, stxpAmount);
+  //     handleDismissStakeModal();
+  //   },
+  //   [handleDismissStakeModal, onAddNftStake]
+  // );
 
   const walletBalance = useMemo(() => {
     // need better way to get specific pool balance
