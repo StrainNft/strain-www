@@ -8,7 +8,7 @@ import {
 } from 'constants/tokenAddresses'
 
 import Context from './Context'
-import { NftInstance, PoolIds } from 'constants/poolValues'
+import { NftInstance, oldNftInstance, PoolIds } from 'constants/poolValues'
 import useYam from 'hooks/useYam'
 import { addNftStake, burnNft, generateNft, getNftEarned, harvestNfts } from 'yam-sdk/utils'
 import { getUserNfts } from 'utils'
@@ -17,7 +17,7 @@ import Axios from 'axios'
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
   const [nftcollection, setNftCollection] = useState<NftInstance[]>([])
-  const [oldNftCollection, setOldNftCollection] = useState<NftInstance[]>([])
+  const [oldNftCollection, setOldNftCollection] = useState<oldNftInstance[]>([])
   const [isCreating, setIsCreating] = useState(false)
   const [isAdding, setIsAdding] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -26,6 +26,7 @@ const Provider: React.FC = ({ children }) => {
   const [strnXiotLpPoolBalance, setStrnXiotLpPoolBalance] = useState<BigNumber>()
   const [isHarvesting, setIsHarvesting] = useState(false)
   const [fetchNfts, setFetchNfts] = useState(true);
+  const [fetchOldNfts, setFetchOldNfts] = useState(true);
   const [txHash, setTxHash] = useState<string>()
 
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
@@ -76,9 +77,9 @@ const Provider: React.FC = ({ children }) => {
     setIsLoading(true)
 
     if (txHash) checkTxHashRefreshUserNfts(yam.web3.eth, txHash, setTxHash);
-    if (fetchNfts) {
+    if (fetchOldNfts) {
       const startTime = new Date().getTime();
-      setFetchNfts(false)
+      setFetchOldNfts(false)
       getUserNfts(provider, oldStrainNFTAddress, userAddress, oldCrafterAddress, yam.contracts.strain_nft_genetics)
         .then(oldNftinstances => {
           const fetchTime = new Date().getTime();
@@ -94,11 +95,11 @@ const Provider: React.FC = ({ children }) => {
         })
         .catch(e => {
           setIsLoading(false);
-          setFetchNfts(true)
+          setFetchOldNfts(true)
         })
     }
     setIsLoading(false);
-  }, [yam, fetchNfts, txHash])
+  }, [yam, fetchOldNfts, txHash])
 
   const fetchEarnedBalance = useCallback(async (yam, account, nftcollection: NftInstance[]) => {
     if (!account || !yam) return
