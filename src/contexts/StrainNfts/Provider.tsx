@@ -68,8 +68,6 @@ const Provider: React.FC = ({ children }) => {
   const fetchOldUsersNfts = useCallback(async (yam: any, userAddress: string, provider: provider) => {
 
     const oldStrainNFTAddress = getAddresses().oldStrainNFTAddress;
-    const oldCrafterAddress = getAddresses().oldStrainNFTCrafterAddress;
-
     if (account === undefined || yam === undefined) {
       console.log('account, yam', account !== undefined, yam !== undefined)
       return
@@ -80,7 +78,7 @@ const Provider: React.FC = ({ children }) => {
     if (fetchOldNfts) {
       const startTime = new Date().getTime();
       setFetchOldNfts(false)
-      getUserNfts(provider, oldStrainNFTAddress, userAddress, oldCrafterAddress, yam.contracts.strain_nft_genetics)
+      getUserNfts(provider, oldStrainNFTAddress, userAddress, yam.contracts.strain_nft_crafter_old, yam.contracts.strain_nft_genetics)
         .then(oldNftinstances => {
           const fetchTime = new Date().getTime();
           console.log(`Old NFT fetching took ${(fetchTime - startTime) / 1000} seconds`)
@@ -105,7 +103,7 @@ const Provider: React.FC = ({ children }) => {
     if (!account || !yam) return
     if (!nftcollection || nftcollection.length === 0) return setEarnedStrnBalance(new BigNumber(0));
     const nftIds = nftcollection.map(n => n.nftId);
-    const balance = await getNftEarned(yam, yam.contracts.strain_nft_crafter, account, nftIds);
+    const balance = await getNftEarned(yam, yam.contracts.strain_nft_crafter_old, account, nftIds);
     console.log('nft earned balance', String(balance));
     setEarnedStrnBalance(balance)
   }, [
