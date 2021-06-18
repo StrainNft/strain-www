@@ -167,8 +167,15 @@ const StyledNft = ({ nft }: { nft: oldNftInstance }) => {
                   }
                   size="sm"
                 />
-                )
               </Tooltip>
+              <StyledLabels>
+                <StyledLpLabel>
+                  <div>{poolName}</div>
+                  <StyledValue>
+                    {nft?.lpBalance ? formattedLPBalance : "-"}
+                  </StyledValue>
+                </StyledLpLabel>
+              </StyledLabels>
             </StyledInfo>
           </>
         )}
