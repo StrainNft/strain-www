@@ -34,6 +34,7 @@ import StrnXiotIncJson from '../clean_build/contracts/STRNXIOTIncentivizer.json'
 import StxpIncentivizer from '../clean_build/contracts/STXPIncentivizer.json'
 import StrainNFT from '../clean_build/contracts/StrainNFT.json'
 import StrainNFTCrafter from '../clean_build/contracts/StrainNFTCrafter.json'
+import StrainNFTCrafterOLD from '../clean_build/contracts/StrainNFTCrafter.json' // same contract ABI different address hardcoded change below
 import StrainNFTGenetics from '../clean_build/contracts/StrainNFTGenetics.json'
 
 import MigratorJson from "../clean_build/contracts/Migrator.json"
@@ -76,6 +77,11 @@ export class Contracts {IncJson
     // NFT 
     this.strain_nft = new this.web3.eth.Contract(StrainNFT.abi);
     this.strain_nft_crafter = new this.web3.eth.Contract(StrainNFTCrafter.abi);
+
+    // j00lz hack for burn nfts page
+    StrainNFTCrafterOLD.networks[1].address = "0xCbb9fA9b7b3d70231B4aD1C6819D6251d612b116"    
+    this.strain_nft_crafter_old = new this.web3.eth.Contract(StrainNFTCrafterOLD.abi);
+    
     this.strain_nft_genetics = new this.web3.eth.Contract(StrainNFTGenetics.abi);
 
     this.comp_pool = new this.web3.eth.Contract(COMPPoolJson.abi);
@@ -133,6 +139,7 @@ export class Contracts {IncJson
       { contract: this.strneth_pool, json: StrnEthIncJson },
       { contract: this.strain_nft, json: StrainNFT },
       { contract: this.strain_nft_crafter, json: StrainNFTCrafter },
+      { contract: this.strain_nft_crafter_old, json: StrainNFTCrafterOLD },
       { contract: this.strain_nft_genetics, json: StrainNFTGenetics },
       { contract: this.strnxiot_pool, json: StrnXiotIncJson },
       { contract: this.stxpInc_pool, json: StxpIncentivizer },
