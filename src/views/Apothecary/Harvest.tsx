@@ -51,7 +51,7 @@ const Harvest: React.FC = () => {
             )
         }
     }, [
-        String(isHarvesting),
+        isHarvesting,
         earnedStrnBalance,
         onHarvest,
         status
