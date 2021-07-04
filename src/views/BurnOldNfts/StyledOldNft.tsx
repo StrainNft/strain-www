@@ -1,10 +1,10 @@
 import {
   attributeNames,
-  NftInstance,
   DEFAULT_NFT_SIZE,
   POOL_NAMES,
   PoolIds,
   ENABLE_BURN_REWARDS_AMOUNT,
+  oldNftInstance,
 } from "constants/poolValues";
 import useStrainNfts from "hooks/useStrainNfts";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -13,17 +13,17 @@ import { Spacer } from "react-neu";
 import numeral from "numeral";
 import styled from "styled-components";
 import { Tooltip } from "react-lightweight-tooltip";
-import StyledPrimaryButton from "./StyledButton";
-import AdditionalStakeModal from "views/Modals/AdditionalStakeModal";
+// import AdditionalStakeModal from "views/Modals/AdditionalStakeModal";
 import useBalances from "hooks/useBalances";
+import StyledPrimaryButton from "views/Common/StyledButton";
 
-const StyledNft = ({ nft, isDispensary = false, isBurnOldNftsPage = false}: { nft: NftInstance, isDispensary?: Boolean, isBurnOldNftsPage?: Boolean }) => {
+const StyledNft = ({ nft }: { nft: oldNftInstance }) => {
   const [isNftLoading, setIsNftLoading] = useState(false);
-  const [updatedNft, setUpdatedNft] = useState<NftInstance>();
+  const [updatedNft, setUpdatedNft] = useState<oldNftInstance>();
   const [canBurn, setCanBurn] = useState<boolean>(false);
-  const [addStakeModalIsOpen, setAddStakeModalIsOpen] = useState<boolean>(
-    false
-  );
+  // const [addStakeModalIsOpen, setAddStakeModalIsOpen] = useState<boolean>(
+  //   false
+  // );
 
   const {
     onRetrieve,
@@ -43,8 +43,8 @@ const StyledNft = ({ nft, isDispensary = false, isBurnOldNftsPage = false}: { nf
   useEffect(() => {
     if (nft && !updatedNft) {
       setIsNftLoading(true);
-      onRetrieve(nft)
-        .then((updated: NftInstance) => {
+      onRetrieveOld(nft)
+        .then((updated: oldNftInstance) => {
           setUpdatedNft(updated);
           setIsNftLoading(false);
         })
@@ -83,22 +83,22 @@ const StyledNft = ({ nft, isDispensary = false, isBurnOldNftsPage = false}: { nf
     onDestroyNft(nft.poolId, nft);
   };
 
-  const handleAddStakeClick = useCallback(() => {
-    setAddStakeModalIsOpen(true);
-  }, [setAddStakeModalIsOpen]);
+  // const handleAddStakeClick = useCallback(() => {
+  //   setAddStakeModalIsOpen(true);
+  // }, [setAddStakeModalIsOpen]);
 
-  const handleDismissStakeModal = useCallback(() => {
-    setAddStakeModalIsOpen(false);
-  }, [setAddStakeModalIsOpen]);
+  // const handleDismissStakeModal = useCallback(() => {
+  //   setAddStakeModalIsOpen(false);
+  // }, [setAddStakeModalIsOpen]);
 
-  const handleOnAdditionalStake = useCallback(
-    (amount: string, stxpAmount: string) => {
-      const poolId = nft?.poolId || "0"; // assume pool 0, nft?.poolId should always be populated
-      onAddNftStake(poolId, nft.nftId, amount, stxpAmount);
-      handleDismissStakeModal();
-    },
-    [handleDismissStakeModal, onAddNftStake]
-  );
+  // const handleOnAdditionalStake = useCallback(
+  //   (amount: string, stxpAmount: string) => {
+  //     const poolId = nft?.poolId || "0"; // assume pool 0, nft?.poolId should always be populated
+  //     onAddNftStake(poolId, nft.nftId, amount, stxpAmount);
+  //     handleDismissStakeModal();
+  //   },
+  //   [handleDismissStakeModal, onAddNftStake]
+  // );
 
   const walletBalance = useMemo(() => {
     // need better way to get specific pool balance
@@ -150,19 +150,12 @@ const StyledNft = ({ nft, isDispensary = false, isBurnOldNftsPage = false}: { nf
               <Tooltip
                 styles={greenRoundedStyle}
                 content={
-                  isDispensary ? `Buy / Sell Your NFT ${nft.nftName}` : !canBurn
+                  !canBurn
                     ? "In order to burn your NFT, you must first claim your rewards."
                     : "Burning will release your LP tokens"
                 }
               >
-                {isDispensary ? <StyledPrimaryButton
-                  // onClick={}
-                  // disabled={}
-                  text={
-                    "Buy"
-                  }
-                  size="sm"
-                /> : <StyledPrimaryButton
+                <StyledPrimaryButton
                   onClick={handelUnstake}
                   disabled={nft.isDestroying || !canBurn}
                   text={
@@ -173,7 +166,7 @@ const StyledNft = ({ nft, isDispensary = false, isBurnOldNftsPage = false}: { nf
                       : "Burn"
                   }
                   size="sm"
-                />}
+                />
               </Tooltip>
               <StyledLabels>
                 <StyledLpLabel>
@@ -182,24 +175,12 @@ const StyledNft = ({ nft, isDispensary = false, isBurnOldNftsPage = false}: { nf
                     {nft?.lpBalance ? formattedLPBalance : "-"}
                   </StyledValue>
                 </StyledLpLabel>
-                {isBurnOldNftsPage ? null : <StyledPrimaryButton
-                  text={isAdding ? "..." : "+"}
-                  onClick={handleAddStakeClick}
-                  size={"sm"}
-                />}
               </StyledLabels>
             </StyledInfo>
           </>
         )}
         {isNftLoading && <StyledLoading>Loading ...</StyledLoading>}
       </NFTCard>
-      <AdditionalStakeModal
-        isOpen={addStakeModalIsOpen}
-        onDismiss={handleDismissStakeModal}
-        onAddStake={handleOnAdditionalStake}
-        label={`${getAttribute(attributeNames.LP_TYPE)} UNI-V2 LP`}
-        fullBalance={walletBalance}
-      />
       <Spacer size="md" />
     </>
   );

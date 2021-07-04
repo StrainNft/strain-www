@@ -8,7 +8,7 @@ import {
 } from 'constants/tokenAddresses'
 
 import Context from './Context'
-import { NftInstance, PoolIds } from 'constants/poolValues'
+import { NftInstance, oldNftInstance, PoolIds } from 'constants/poolValues'
 import useYam from 'hooks/useYam'
 import { addNftStake, burnNft, generateNft, getNftEarned, harvestNfts } from 'yam-sdk/utils'
 import { getUserNfts } from 'utils'
@@ -17,6 +17,7 @@ import Axios from 'axios'
 const Provider: React.FC = ({ children }) => {
   const [confirmTxModalIsOpen, setConfirmTxModalIsOpen] = useState(false)
   const [nftcollection, setNftCollection] = useState<NftInstance[]>([])
+  const [oldNftCollection, setOldNftCollection] = useState<oldNftInstance[]>([])
   const [isCreating, setIsCreating] = useState(false)
   const [isAdding, setIsAdding] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -25,6 +26,7 @@ const Provider: React.FC = ({ children }) => {
   const [strnXiotLpPoolBalance, setStrnXiotLpPoolBalance] = useState<BigNumber>()
   const [isHarvesting, setIsHarvesting] = useState(false)
   const [fetchNfts, setFetchNfts] = useState(true);
+  const [fetchOldNfts, setFetchOldNfts] = useState(true);
   const [txHash, setTxHash] = useState<string>()
 
   const { account, ethereum }: { account: string | null, ethereum: provider } = useWallet()
@@ -63,11 +65,45 @@ const Provider: React.FC = ({ children }) => {
     setIsLoading(false);
   }, [yam, fetchNfts, txHash])
 
+  const fetchOldUsersNfts = useCallback(async (yam: any, userAddress: string, provider: provider) => {
+
+    const oldStrainNFTAddress = getAddresses().oldStrainNFTAddress;
+    if (account === undefined || yam === undefined) {
+      console.log('account, yam', account !== undefined, yam !== undefined)
+      return
+    }
+    setIsLoading(true)
+
+    if (txHash) checkTxHashRefreshUserNfts(yam.web3.eth, txHash, setTxHash);
+    if (fetchOldNfts) {
+      const startTime = new Date().getTime();
+      setFetchOldNfts(false)
+      getUserNfts(provider, oldStrainNFTAddress, userAddress, yam.contracts.strain_nft_crafter_old, yam.contracts.strain_nft_genetics)
+        .then(oldNftinstances => {
+          const fetchTime = new Date().getTime();
+          console.log(`Old NFT fetching took ${(fetchTime - startTime) / 1000} seconds`)
+          console.log('oldNftinstances', oldNftinstances)
+          setOldNftCollection(oldNftinstances)
+
+          // sum up LPs in each pool
+          const strnEthNfts = oldNftinstances.filter(n => n.poolId === PoolIds.STRN_ETH).reduce((p, n) => p.plus(n.lpBalance || 0), new BigNumber(0));
+          const strnXiotNfts = oldNftinstances.filter(n => n.poolId === PoolIds.STRN_XIOT).reduce((p, n) => p.plus(n.lpBalance || 0), new BigNumber(0));
+          setStrnEthLpPoolBalance(strnEthNfts);
+          setStrnXiotLpPoolBalance(strnXiotNfts);
+        })
+        .catch(e => {
+          setIsLoading(false);
+          setFetchOldNfts(true)
+        })
+    }
+    setIsLoading(false);
+  }, [yam, fetchOldNfts, txHash])
+
   const fetchEarnedBalance = useCallback(async (yam, account, nftcollection: NftInstance[]) => {
     if (!account || !yam) return
     if (!nftcollection || nftcollection.length === 0) return setEarnedStrnBalance(new BigNumber(0));
     const nftIds = nftcollection.map(n => n.nftId);
-    const balance = await getNftEarned(yam, yam.contracts.strain_nft_crafter, account, nftIds);
+    const balance = await getNftEarned(yam, yam.contracts.strain_nft_crafter_old, account, nftIds);
     console.log('nft earned balance', String(balance));
     setEarnedStrnBalance(balance)
   }, [
@@ -80,8 +116,10 @@ const Provider: React.FC = ({ children }) => {
   useEffect(() => {
     if (account && ethereum && yam) {
       fetchUsersNfts(yam, account, ethereum)
+      fetchOldUsersNfts(yam, account, ethereum)
       let refreshInterval = setInterval(() => {
         fetchUsersNfts(yam, account, ethereum);
+        fetchOldUsersNfts(yam, account, ethereum)
         fetchEarnedBalance(yam, account, nftcollection);
       }, 10000)
       return () => clearInterval(refreshInterval)
@@ -90,6 +128,7 @@ const Provider: React.FC = ({ children }) => {
     account,
     ethereum,
     fetchUsersNfts,
+    fetchOldUsersNfts,
     yam,
     nftcollection,
   ])
@@ -157,6 +196,13 @@ const Provider: React.FC = ({ children }) => {
     return promise.then(response => ({ ...nft, attribs: response.data }));
   }, [])
 
+  const handleOldNftRetrive = useCallback(async (nft: oldNftInstance): Promise<oldNftInstance> => {
+    if (!nft?.dataUrl) return nft;
+    Axios.get(nft.dataUrl)
+    const promise = Axios.get(nft.dataUrl)
+    return promise.then(response => ({ ...nft, attribs: response.data }));
+  }, [])
+
   const handleHarvest = useCallback(async () => {
     if (!yam) return
     setConfirmTxModalIsOpen(true)
@@ -195,6 +241,7 @@ const Provider: React.FC = ({ children }) => {
       strainNftCollection: nftcollection,
       onDestroyNft: handleDestroyNft,
       onRetrieve: handleNftRetrive,
+      onRetrieveOld: handleOldNftRetrive,
       onCreateNft: handleCreateNft,
       onHarvest: handleHarvest,
       onAddNftStake: handleAddNftStake,
@@ -206,6 +253,7 @@ const Provider: React.FC = ({ children }) => {
       strnEthLpPoolBalance,
       strnXiotLpPoolBalance,
       findNftById,
+      oldStrainNftCollection: oldNftCollection,
     }}>
       {children}
     </Context.Provider>

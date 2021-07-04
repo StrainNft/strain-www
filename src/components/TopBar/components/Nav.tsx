@@ -21,6 +21,9 @@ const Nav: React.FC = () => {
       <StyledRouterLink exact activeClassName="active" to="/greenhouse">
         Greenhouse
       </StyledRouterLink>
+      <StyledRouterLink exact activeClassName="active" to="/burnoldnfts">
+        Burn Old Nft's
+      </StyledRouterLink>
       {/*<StyledRouterLink exact activeClassName="active" to="/migrate">Migrate</StyledRouterLink>*/}
       {/*<StyledRouterLink exact activeClassName="active" to="/governance">Govern</StyledRouterLink>*/}
       {/*<StyledRouterLink activeClassName="active" to="/faq">FAQ</StyledRouterLink>*/}

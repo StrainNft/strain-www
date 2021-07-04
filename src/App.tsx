@@ -22,6 +22,7 @@ import FAQ from "views/FAQ";
 import Home from "views/Home";
 import Apothecary from "views/Apothecary";
 import Dispensary from "views/Dispensary";
+import BurnOldNfts from 'views/BurnOldNfts';
 import Greenhouse from "views/Greenhouse";
 import Migrate from "views/Migrate";
 import Governance from "views/Governance";
@@ -65,8 +66,11 @@ const App: React.FC = () => {
           <Route exact path="/gallery">
             <Gallery />
           </Route>
-          <Route exact path="/dispensary">
+          {/* <Route exact path="/dispensary">
             <Dispensary />
+          </Route> */}
+          <Route exact path="/burnoldnfts">
+            <BurnOldNfts />
           </Route>
           <Route exact path="/greenhouse">
             <Greenhouse />
