@@ -63,7 +63,7 @@ const Provider: React.FC = ({ children }) => {
         })
     }
     setIsLoading(false);
-  }, [yam, fetchNfts, txHash])
+  }, [account, txHash, fetchNfts])
 
   const fetchOldUsersNfts = useCallback(async (yam: any, userAddress: string, provider: provider) => {
 
@@ -97,7 +97,7 @@ const Provider: React.FC = ({ children }) => {
         })
     }
     setIsLoading(false);
-  }, [yam, fetchOldNfts, txHash])
+  }, [account, txHash, fetchOldNfts])
 
   const fetchEarnedBalance = useCallback(async (yam, account, nftcollection: NftInstance[]) => {
     if (!account || !yam) return
@@ -106,12 +106,7 @@ const Provider: React.FC = ({ children }) => {
     const balance = await getNftEarned(yam, yam.contracts.strain_nft_crafter, account, nftIds);
     console.log('nft earned balance', String(balance));
     setEarnedStrnBalance(balance)
-  }, [
-    account,
-    setEarnedStrnBalance,
-    yam,
-    nftcollection
-  ])
+  }, [setEarnedStrnBalance])
 
   useEffect(() => {
     if (account && ethereum && yam) {
@@ -124,14 +119,7 @@ const Provider: React.FC = ({ children }) => {
       }, 10000)
       return () => clearInterval(refreshInterval)
     }
-  }, [
-    account,
-    ethereum,
-    fetchUsersNfts,
-    fetchOldUsersNfts,
-    yam,
-    nftcollection,
-  ])
+  }, [account, ethereum, fetchUsersNfts, fetchOldUsersNfts, yam, nftcollection, fetchEarnedBalance])
 
   const handleCreateNft = useCallback(async (poolId: string, amount: string, name: string) => {
     if (!yam) return
