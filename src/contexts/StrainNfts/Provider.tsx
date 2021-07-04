@@ -103,7 +103,7 @@ const Provider: React.FC = ({ children }) => {
     if (!account || !yam) return
     if (!nftcollection || nftcollection.length === 0) return setEarnedStrnBalance(new BigNumber(0));
     const nftIds = nftcollection.map(n => n.nftId);
-    const balance = await getNftEarned(yam, yam.contracts.strain_nft_crafter_old, account, nftIds);
+    const balance = await getNftEarned(yam, yam.contracts.strain_nft_crafter, account, nftIds);
     console.log('nft earned balance', String(balance));
     setEarnedStrnBalance(balance)
   }, [
